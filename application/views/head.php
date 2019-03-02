@@ -26,13 +26,13 @@
 			<div class="sidebar-inner">
 				<div class="logo-section">
 					<ul>
-						<li><a href="#"><span class="logo site-logo"><img src="assets/images/logo/logo-dummy.png" /></span><span class="logo-text">KES OS</span></a></li>
+						<li><a href="#"><span class="logo site-logo"><img src="assets/images/logo/logo-dummy.png" /></span><span class="logo-text">Weebo OS</span></a></li>
 					</ul>
 				</div>
 				<div class="nav-section">
 					<ul>
-						<li><a href="dashboard"><span class="logo nav-logo"><i class="fas fa-home"></i></span><span class="logo-text">Dashboard</span></a></li>
-						<li><a href="parent"><span class="logo nav-logo"><i class="fas fa-user-friends"></i></span><span class="logo-text">Animes</span></a></li>
+						<li><a href="admin"><span class="logo nav-logo"><i class="fas fa-home"></i></span><span class="logo-text">Dashboard</span></a></li>
+						<li><a href="anime-list"><span class="logo nav-logo"><i class="fas fa-user-friends"></i></span><span class="logo-text">Animes</span></a></li>
 						<li class='has-submenu'><a href="#"><span class="logo nav-logo"><i class="fas fa-cog"></i></span><span class="logo-text">Settings</span></a>
 							<ul class="submenu">
 								<li><a href="#"><span class="logo nav-logo"><i class="fas fa-info-circle"></i></span><span class="logo-text">Informasi</span></a></li>
