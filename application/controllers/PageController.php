@@ -19,8 +19,14 @@ class PageController extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
-  // untuk buat load kontennya
+  // untuk buat load kontennya	
 	public function index(){
 		$this->load->view('dashboard');
+	}
+	public function anime_list(){
+		$this->load->view('anime-list');
+	}
+	public function genre_list(){
+		$this->load->view('genre-list');
 	}
 }
