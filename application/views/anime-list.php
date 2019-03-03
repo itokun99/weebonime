@@ -150,10 +150,11 @@ function getAnimeInfo(anime_id){
 		type: 'GET',
 		beforeSend : function(){
 			// alert("tunggu bentar");
+			$("#generate_mal").val("Loading").attr('disabled', '');
 		},
 		success : function(anime_data){
 			console.log(anime_data);
-			// alert("Berhasil");
+			alert("Berhasil");
 			(function(){
 				$.fn.hasValue = function(){
 					if(this.val() != ""){
@@ -177,6 +178,7 @@ function getAnimeInfo(anime_id){
 			// $('[name="anime_sinopsis"]').val(anime_data.synopsis);
 			// tinymce.init({ selector:'textarea' });
 			tinyMCE.activeEditor.setContent(anime_data.synopsis);
+			$("#generate_mal").val("Generate").removeAttr('disabled');
 			
 		}
 	})
