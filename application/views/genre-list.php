@@ -16,7 +16,9 @@
       <div class="col-12 col-sm-12 col-md-12 col-lg-8">
          <div class="flat-card mb-4">
             <div class="flat-card-header">
-               <h4 class="flat-card-title">EDITOR TEXT</h4>
+               <h4 class="flat-card-title">EDITOR TEXT 
+                  <button type="button" class="btn btn-primary btn-sm float-right">Publish</button>
+               </h4>
             </div>
             <div class="flat-card-body">
                <textarea>Next, get a free Tiny Cloud API key!</textarea>
