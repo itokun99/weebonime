@@ -19,7 +19,7 @@
                <h4 class="flat-card-title">EDITOR TEXT</h4>
             </div>
             <div class="flat-card-body">
-               <textarea>Next, get a free Tiny Cloud API key!</textarea>
+               <textarea id="sinop">Next, get a free Tiny Cloud API key!</textarea>
             </div>
          </div>
       </div>

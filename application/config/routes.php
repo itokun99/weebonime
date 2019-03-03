@@ -63,3 +63,4 @@ $route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/example/users/
 $route["admin"] = "PageController";
 $route["anime-list"] = "PageController/anime_list";
 $route["genre-list"] = "PageController/genre_list";
+$route["get-anime"] = "AnimeGrab/getAnime";
