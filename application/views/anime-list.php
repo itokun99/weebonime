@@ -156,7 +156,9 @@ function getAnimeInfo(anime_id){
 			// alert("Berhasil");
 			(function(){
 				$.fn.hasValue = function(){
-					this.siblings("label").addClass("has-val");
+					if(this.val() != ""){
+						this.siblings("label").addClass("has-val");
+					}
 				}
 			})()
 
