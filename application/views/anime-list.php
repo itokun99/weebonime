@@ -78,13 +78,19 @@
 													<label>Durasi</label>
 												</div>
 											</div>
-											<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+											<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 												<div class="form-group">
 													<input type="text" class="form-control" name="anime_release" value="" />
 													<label>Rilis</label>
 												</div>
 											</div>
-											<div class="col-12 col-sm-6 col-md-6 col-lg-6">
+											<div class="col-12 col-sm-12 col-md-6 col-lg-6">
+												<div class="form-group">
+													<input type="text" class="form-control" name="anime_studios" value="" />
+													<label>Studio</label>
+												</div>
+											</div>
+											<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 												<div class="form-group">
 													<input type="text" class="form-control" name="anime_trailer" value="" />
 													<label>Trailer</label>
@@ -104,9 +110,14 @@
 										</div>
 									</div>
 
-
+									<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+										<div class="form-group">
+											<textarea style="resize:none; min-height: 150px" class="form-control" name="anime_sinopsis" id="sinop"></textarea>
+											<label>Sinopsis</label>
+										</div>
+									</div>
 								</div>
-								<textarea name="anime_sinopsis" id="sinop">Ketik sinopsis disini!</textarea>
+								<!-- <textarea name="anime_sinopsis" id="sinop">Ketik sinopsis disini!</textarea> -->
 							</div>
             </div>
          </div>
@@ -139,7 +150,7 @@
 </div>
 <!-- content -->
 <script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea' });</script>
+<!-- <script>tinymce.init({ selector:'textarea' });</script> -->
 <script>
 function getAnimeInfo(anime_id){
 	// for production
@@ -175,13 +186,28 @@ function getAnimeInfo(anime_id){
 			$('[name="anime_trailer"]').val(anime_data.pv).hasValue();
 			$('[name="anime_poster"]').val(anime_data.image).hasValue();
 			$('.cover-pic img').attr("src", anime_data.image);
-			// $('[name="anime_sinopsis"]').val(anime_data.synopsis);
+			$('[name="anime_sinopsis"]').val(anime_data.synopsis).hasValue();
+			$('[name="anime_studios"]').val(anime_data.studio).hasValue();
 			// tinymce.init({ selector:'textarea' });
-			tinyMCE.activeEditor.setContent(anime_data.synopsis);
+			// tinyMCE.activeEditor.setContent(anime_data.synopsis);
 			$("#generate_mal").val("Generate").removeAttr('disabled');
-			
 		}
 	})
+}
+
+function posterCheker(){
+	$('[name="anime_poster"]').on('change', function(){
+		var url = $(this).val();
+		$.ajax({
+			url : JSON.stringify(url),
+			success : function(){
+				$('.cover-pic img').attr("src", $(this).val());				
+			},
+			error : function(error){
+				console.log(error);
+			}
+		})
+	})	
 }
 
 function grabber(){
@@ -195,6 +221,7 @@ function grabber(){
 
 $(document).ready(function(){
 	grabber();
+	// posterCheker();
 })
 </script>
 <?php include 'footer.php';?>
