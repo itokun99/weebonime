@@ -64,3 +64,4 @@ $route["admin"] = "PageController";
 $route["anime-list"] = "PageController/anime_list";
 $route["genre-list"] = "PageController/genre_list";
 $route["get-anime"] = "AnimeGrab/getAnime";
+$route["api/grab-anime"] = "api/AnimeGrabber";
