@@ -11,6 +11,24 @@
 				<!-- end site content -->
 			</div>
 		</div>
+		
+		<!-- alert item utility -->
+		<div class="alert-item">
+			<div class="flat-alert">
+				<div class="flat-alert-header">
+					<h4 class="flat-alert-title"></h4>
+					<span class="flat-alert-close"><i class="fas fa-times"></i></span>
+				</div>
+				<div class="flat-alert-body">
+					<p class="message"><p>
+				</div>
+				<div class="flat-alert-footer" style="display:none;">
+					<div class="text-right">
+						<button class="btn btn-primary">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- end site main -->
 	</div>
 	<!-- script -->
