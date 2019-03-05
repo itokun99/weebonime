@@ -64,7 +64,9 @@ class Animes extends REST_Controller {
     }
   }
   public function index_post(){
-    $datez = date('Y-m-d H:i:s');
+    $anime_title = $this->post("anime_title");
+    $anime_mal_id = $this->post("anime_mal_id");
+
     $anime_data = [
       "anime_mal_id" => $this->post("anime_mal_id"),
       "anime_title" => $this->post("anime_title"),
@@ -82,16 +84,27 @@ class Animes extends REST_Controller {
       "anime_sinopsis" => $this->post("anime_sinopsis"),
     ];
 
-    if($this->AnimesModel->addAnimes($anime_data) > 0) {
-      $this->response([
-        "status" => true,
-        "pesan" => "Data anime telah berhasil ditambahkan",
-      ], REST_Controller::HTTP_CREATED);
+    $cekExist = $this->AnimesModel->checkAnimeMalId($anime_mal_id);
+    if($cekExist == 1){
+        $message = 'Anime '. $anime_title. ' sudah ada';
+        $this->response([
+            'status' => false,
+            'pesan' => $message ,
+        ], REST_Controller::HTTP_BAD_REQUEST);
     } else {
-      $this->response([
-        "status" => false,
-        "pesan" => "Gagal menambahkan data",
-      ], REST_Controller::HTTP_BAD_REQUEST);
+      $insertAnime = $this->AnimesModel->addAnimes($anime_data);
+      if($insertAnime > 0) {
+        $this->response([
+          "status" => true,
+          "pesan" => "Data anime telah berhasil ditambahkan",
+          "anime_title" => $anime_title,
+        ], REST_Controller::HTTP_CREATED);
+      } else {
+        $this->response([
+          "status" => false,
+          "pesan" => "Gagal menambahkan data",
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
     }
   }
 

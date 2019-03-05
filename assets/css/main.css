@@ -504,3 +504,127 @@ margin-left: 0px;
     background: #fff;
     left: 10px;
 }
+
+/* FLAT ALERT */
+.alert-container {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: -1;
+	transition: .5s;
+	background: rgba(0, 0, 0, 0.0);
+}
+.alert-item {
+	position: fixed;
+	top: 80px;
+	left: 50%;
+	width: 700px;
+	transition: .5s;
+	opacity: 0;
+	z-index: 999999;
+	transform: translate(-50%, calc(-100% - 90px));
+	max-width: 100%;
+	margin: 0 14px;
+}
+.flat-alert {} .flat-alert {
+	position: relative;
+	background: #fff;
+	padding: 0;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.flat-alert-header {
+	position: relative;
+	padding: 8px 14px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.flat-alert-body {
+	position: relative;
+	padding: 14px;
+}
+.flat-alert-footer {
+	position: relative;
+	padding: 0 14px 14px 14px;
+}
+h4.flat-alert-title {
+	font-size: 16px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	margin: 0;
+}
+span.flat-alert-close {
+	position: absolute;
+	right: 0;
+	top: 0;
+	line-height: 1;
+	width: 36px;
+	height: 36px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: .3s;
+}
+.alert-item.show {
+	opacity: 1;
+	transform: translate(-50%);
+}
+.alert-container.show {
+	z-index: 99999999;
+}
+/* FLAT ALERT OPTION */
+
+.flat-alert.success {
+	background-color: #9efda5;
+}
+.flat-alert.warning {
+	background-color: #fed330;
+}
+.flat-alert.danger {
+	background-color: #eb3b5a;
+	color: #fff;
+}
+.flat-alert.warning {
+	background-color: #fed330;
+}
+.flat-alert.info {
+	background-color: #4b7bec;
+	color: #fff;
+}
+
+/* CUSTOM MODAL */
+.modal-content {
+	border: none;
+	border-radius: 0;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1), 0 4px 10px 0 rgba(0, 0, 0, 0.1);
+}
+.modal-header {
+	padding: 10px 14px;
+}
+.modal-title {
+	line-height: 1;
+	font-weight: bold;
+}
+.modal-footer {
+	padding: 10px 14px;
+}
+/* FLAT NOTICE */
+
+.flat-note {
+	position: relative;
+	background: #fff;
+	padding: 14px;
+	margin-bottom: 14px;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+.flat-note-message {
+	margin: 0;
+}
+.flat-note.info {
+	background-color: #4b7bec;
+	color: #fff;
+}

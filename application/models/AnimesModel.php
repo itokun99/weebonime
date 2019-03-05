@@ -25,4 +25,7 @@ class AnimesModel extends CI_Model {
     $this->db->update("animes", $anime_data, ["anime_id" => $anime_id]);
     return $this->db->affected_rows();
   }
+  public function checkAnimeMalId($anime_mal_id){
+    return $this->db->get_where('animes',['anime_mal_id' => $anime_mal_id])->num_rows();
+  }
 }
