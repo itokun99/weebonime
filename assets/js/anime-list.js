@@ -352,8 +352,6 @@ function animeAddPlayList(){
   });
 }
 
-function 3
-
 // DOKUMEN READY STATE
 $(document).ready(function(){
 	grabber();

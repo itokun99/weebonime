@@ -1,3 +1,5 @@
+
+<link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css'>
 <!-- breadcrumbs -->
 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
    <div class="breadcrumbs">
@@ -15,12 +17,14 @@
       <div class="col-12 col-sm-12 col-md-12 col-lg-8">
          <div class="flat-card mb-4">
             <div class="flat-card-header">
-               <h4 class="flat-card-title">EDITOR TEXT 
+               <h4 class="flat-card-title">ADD POST
                   <button type="button" class="btn btn-primary btn-sm float-right">Publish</button>
                </h4>
             </div>
             <div class="flat-card-body">
-               <textarea id="sinop">Next, get a free Tiny Cloud API key!</textarea>
+<div ng-app="textAngularTest" ng-controller="wysiwygeditor" class="container app">
+  <div text-angular="text-angular" name="htmlcontent" ng-model="htmlcontent" ta-disabled='disabled'></div>
+</div>
             </div>
          </div>
       </div>
@@ -51,5 +55,14 @@
    </div>
 </div>
 <!-- content -->
-<script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea' });</script>
+  <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js'></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
+<script type="text/javascript">
+      angular.module("textAngularTest", ['textAngular']);
+   function wysiwygeditor($scope) {
+      $scope.orightml = '';
+      $scope.htmlcontent = $scope.orightml;
+      $scope.disabled = false;
+   };
+</script>
