@@ -507,36 +507,10 @@ class AnimeGrabModel extends CI_Controller {
 	}
 	public function check($file){
 		return file_exists($this->dir . '/' . $file);
-  }
-  
-  // public function getAnime() {
-  //   error_reporting(1);	
-  //   header('Content-Type: application/json');
-  //   if ( !isset( $_GET['id'] ) || !$_GET['id'] ) {
-  //     header( 'Content-Type: application/json' );
-  //     $log = array(
-  //       'error' => true,
-  //       'message' => 'Muhammad Irva'
-  //     );
-  //     exit( json_encode( $log ) );
-  //   }
-  //   $link = $_GET['id'];
-  //   // print_r($link);
-  //   // $CodePelajar = new Matte();//mengambil Class dari class-matte.php
-  //   echo $this->get($link)->result(true);
-  // }
+	}
+
   public function getAnime($id = "") {
-    error_reporting(1);	
-    // header('Content-Type: application/json');
-    // if ( !isset( $_GET['id'] ) || !$_GET['id'] ) {
-    //   header( 'Content-Type: application/json' );
-    //   $log = array(
-    //     'error' => true,
-    //     'message' => 'Muhammad Irva'
-    //   );
-    //   exit( json_encode( $log ) );
-    // }
-		// $link = $_GET['id'];
+    error_reporting(1);
 		$mal_url = "https://myanimelist.net/anime/";
 
 		if(!isset($id) || $id == "" || $id === null || !$id ){
@@ -547,9 +521,7 @@ class AnimeGrabModel extends CI_Controller {
 			$anime_grab_result = $this->getUrl($link)->result(true);
 			return $anime_grab_result;
 		}
-    // print_r($link);
-    // $CodePelajar = new Matte();//mengambil Class dari class-matte.php
-    
+
   }
   
 }

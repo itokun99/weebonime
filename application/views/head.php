@@ -34,10 +34,9 @@
 						<li><a href="admin"><span class="logo nav-logo"><i class="fas fa-home"></i></span><span class="logo-text">Dashboard</span></a></li>
 						<li><a href="genre-list"><span class="logo nav-logo"><i class="fas fa-pencil-alt"></i></span><span class="logo-text">Add Anime</span></a></li>
 						<li><a href="anime-list"><span class="logo nav-logo"><i class="fas fa-user-friends"></i></span><span class="logo-text">Animes</span></a></li>					
-						<li class='has-submenu'><a href="#"><span class="logo nav-logo"><i class="fas fa-cog"></i></span><span class="logo-text">Settings</span></a>
+						<li class='has-submenu'><a href="#"><span class="logo nav-logo"><i class="fas fa-cog"></i></span><span class="logo-text">More</span></a>
 							<ul class="submenu">
-								<li><a href="#"><span class="logo nav-logo"><i class="fas fa-info-circle"></i></span><span class="logo-text">Informasi</span></a></li>
-								<li><a href="#"><span class="logo nav-logo"><i class="fas fa-code"></i></span><span class="logo-text">Developer</span></a></li>
+								<li><a href="setting"><span class="logo nav-logo"><i class="fas fa-cog"></i></span><span class="logo-text">Setting</span></a></li>
 							</ul>
 						</li>
 					</ul>

@@ -1,4 +1,3 @@
-<?php include 'head.php';?>
 <!-- breadcrumbs -->
 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
    <div class="breadcrumbs">
@@ -54,4 +53,3 @@
 <!-- content -->
 <script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
 <script>tinymce.init({ selector:'textarea' });</script>
-<?php include 'footer.php';?>

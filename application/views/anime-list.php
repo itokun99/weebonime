@@ -1,4 +1,3 @@
-<?php include 'head.php';?>
 <!-- breadcrumbs -->
 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
    <div class="breadcrumbs">
@@ -127,23 +126,63 @@
 		</div>
 		<!--SIDE NOTIF-->
 		<div class="col-12 col-sm-12 col-md-6 col-lg-4">
-			<div class="flat-card">
-				<div class="flat-card-header">
-					<h4 class="flat-card-title">My Notice</h4>
+			<div class="flat-card mb-4">
+				<div class="flat-card-header" data-toggle="collapse" data-target="#animePlayListBody">
+					<h4 class="flat-card-title">Add Player List</h4>
 				</div>
-				<div class="flat-card-body">
-					<div class="notice-board">
-						<ul class="notice-board-list">
-							<li>
-								<div class="notice-list-item">
-									<div class="notice-list-header"> <span class="notice-list-date">16 May 2017</span>
-										<span class="notice-list-arrive">5 min ago</span>
-									</div>
-									<h5 class="notice-list-title">Notice Title Here</h5>
-									<p class="notice-list-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae erat a nisl venenatis pellentesque.</p>
+				<div id="animePlayListBody" class="collapse show">
+					<div class="flat-card-body"  style="max-height:300px; overflow-y:auto">
+						<div id="animePlayListForm">
+							<div class="aplf-block">
+								<div class="form-group">
+									<input class="form-control play-anime-title" type="text" name="anime_play_title" />
+									<label>Eps Title</label>
 								</div>
-							</li>
-						</ul>
+								<div class="form-group">
+									<input class="form-control play-anime-link" type="text" name="anime_play_link" />
+									<label>Player Link</label>
+								</div>
+								<div class="form-group text-right">
+									<button class="btn btn-danger delete-play">Delete</button>
+								</div>
+								<div style="border-bottom:2px dashed #bbb;" class="mb-4"></div>
+								
+							</div>
+						</div>
+					</div>
+					<div class="flat-card-footer">
+						<div class="text-right">
+							<button class="btn btn-primary" id="addAnimePlayList">Add</button>
+							<button class="btn btn-primary" id="saveAnimePlayList">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="flat-card">
+				<div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody">
+					<h4 class="flat-card-title">Add Player List</h4>
+				</div>
+				<div id="PlayListBody" class="collapse show">
+					<div class="flat-card-body">
+						<div id="playListShow" class="table-responsive">
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="flat-card">
+				<div class="flat-card-header" data-toggle="collapse" data-target="#animeListBody">
+					<h4 class="flat-card-title">Anime List</h4>				
+				</div>
+				<div id="animeListBody" class="collapse show">
+					<div class="flat-card-body">
+						<div id="animeListShow" class="table-responsive">
+							
+						</div>
 					</div>
 				</div>
 			</div>
@@ -152,4 +191,3 @@
 </div>
 <!-- content -->
 <script src="assets/js/anime-list.js"></script>
-<?php include 'footer.php';?>

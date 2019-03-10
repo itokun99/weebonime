@@ -105,7 +105,7 @@ function AddAnimeAction(){
       }
       $("#addAnime").text("Add Anime").removeAttr('disabled');
       openAlert(dataAlert);
-      resetFormAction();
+      // resetFormAction();
     } else {
       var message = response.responseJSON.pesan
       console.log(response);
@@ -129,8 +129,17 @@ function AddAnimeAction(){
     $("#addAnime").text("Add Anime").removeAttr('disabled');
     openAlert(dataAlert);
   }
-	// send ajax
-	ajaxSendJSON(url, type, anime_data, beforeSendAction, successAction, errorAction);
+
+  if($('[name="anime_mal_id"]').val() == "" || $('[name="anime_title"]').val() == ""){
+    openAlert({
+      alertType : "warning",
+      alertTitle : "Warning",
+      alertMessage : "Tidak bisa mengirim form kosong",
+    });
+  } else {
+    // send ajax
+    ajaxSendJSON(url, type, anime_data, beforeSendAction, successAction, errorAction);
+  }
 }
 function AddAnime(){
 	$("#addAnime").on("click", function(){
@@ -182,9 +191,176 @@ function posterCheker(){
 	})	
 }
 
+
+function animeListShowAction(){
+  var url = "api/animes";
+  var data = {};
+  var type = "GET";
+  var successAction = function(response){
+    var status = response.status;
+    var data = response.data;
+    var htmlDOM = "";
+    var tableHeadArray = ["No", "Poster", "MAL ID", "Title", "Type", "Score", "Genre", "Eps" ];
+    var targetDOM = $("#animeListShow");
+
+    if(status === true){
+      htmlDOM += "<table class='play-data-table table-bordered table-sm'><thead>";
+      htmlDOM +="<tr>"
+        for(var i = 0; i < tableHeadArray.length; i++){
+          htmlDOM += "<th>"+tableHeadArray[i]+"</th>";
+        }
+      htmlDOM += "</tr></thead>";
+      htmlDOM += "<tbody>";
+        var j = 1;
+        for(var i = 0; i < data.length; i++){
+          htmlDOM += "<tr>";
+          htmlDOM += "<td>"+j+"</td>";
+          htmlDOM += "<td class='p-1'><img width='100' height='130' src='"+data[i].anime_poster+"' /></td>";
+          htmlDOM += "<td>"+data[i].anime_mal_id+"</td>";
+          htmlDOM += "<td>"+data[i].anime_title+"</td>";
+          htmlDOM += "<td>"+data[i].anime_type+"</td>";
+          htmlDOM += "<td>"+data[i].anime_score+"</td>";
+          htmlDOM += "<td>"+data[i].anime_genre+"</td>";
+          htmlDOM += "<td>"+data[i].anime_episode+"</td>";
+          htmlDOM += "</tr>";
+          j++
+        }
+      htmlDOM += "</tbody></table>";
+      targetDOM.html(htmlDOM);
+      $('.play-data-table').DataTable({
+        "paging":   false,
+         "ordering": true,
+         "info":     false
+     })
+    } else {
+      openAlert({
+        alertType : "error",
+        alertTitle : "Error",
+        alertMessage : response.responseJSON.pesan
+      });
+    }
+  };
+  var errorAction = function(response){
+    openAlert({
+      alertType : "error",
+      alertTitle : "Error",
+      alertMessage : response.responseJSON.pesan
+    });
+  };
+  var beforeSendAction = function(response){
+
+  };
+
+  ajaxSendJSON(url, type, data, beforeSendAction, successAction, errorAction );
+}
+
+function animeListShow(){
+  animeListShowAction();
+}
+function deleteAPLB(){
+  $('.delete-play').on('click', function(){
+    $(this).parent().parent().remove()
+  });
+}
+function addAnimePlayListFormAction(){
+  var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group text-right"><button class="btn btn-danger delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
+  $('#animePlayListForm').append(aplf_htmlDOM);
+  setTimeout(googleInputHasValue, 500 );
+  deleteAPLB();
+}
+
+function addAnimePlayListForm(){
+  $("#addAnimePlayList").on("click", function(){
+    addAnimePlayListFormAction();
+  })
+}
+
+
+function animeAddPlayListAction(){
+  var url = "api/animes/playlist";
+  var type = "POST";
+  var arr_apl_title = [];
+  var arr_apl_link = [];
+  var emptyVal = 0;
+  var successAction = function(response){
+    console.log(response);
+    openAlert({
+      alertType : "success",
+      alertTitle : "Berhasil",
+      alertMessage : "Playlist berhasil ditambahkan"
+    });
+  }
+  var beforeSendAction = function(){
+
+  }
+  var errorAction = function(response){
+
+    console.log(response);
+  }
+
+
+  $('.play-anime-title').each(function(){
+    var value = $(this).val();
+    if(value == ""){
+      emptyVal = 1;
+    } else {
+      arr_apl_title.push(value);
+    }
+  });
+  
+  $('.play-anime-link').each(function(){
+    var value = $(this).val();
+    if(value == ""){
+      emptyVal = 1;
+    } else {
+    arr_apl_link.push(value);
+    }
+  });
+
+ var apl_data = {
+   anime_mal_id : $('[name="anime_mal_id"]').val(),
+   apl_data : {
+     apl_title : arr_apl_title,
+     apl_link : arr_apl_link
+   }
+ }
+
+ if(emptyVal == 1){
+   openAlert({
+     alertType : "warning",
+     alertTitle : "Warning!!",
+     alertMessage : "Lengkapi form Anime Play List"
+   });
+ } else {
+  //  ajaxSendJSON()
+  if($('[name="anime_mal_id"]').val() == ""){
+    openAlert({
+      alertType : "warning",
+      alertTitle : "Warning!!",
+      alertMessage : "Isi juga MAL IDnya"
+    });
+  } else {
+    console.log(apl_data);
+    ajaxSendJSON(url, type, apl_data, successAction, beforeSendAction, errorAction);
+  }
+ }
+}
+
+function animeAddPlayList(){
+  $("#saveAnimePlayList").on("click", function(){
+    animeAddPlayListAction();
+  });
+}
+
+function 3
+
 // DOKUMEN READY STATE
 $(document).ready(function(){
 	grabber();
   AddAnime();
   resetForm();
+  animeListShow();
+  addAnimePlayListForm();
+  deleteAPLB();
+  animeAddPlayList();
 });

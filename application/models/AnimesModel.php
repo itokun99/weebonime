@@ -2,9 +2,9 @@
 
 class AnimesModel extends CI_Model {
 
-  public function getAnimes($anime_id = null){
+  public function getAnimes($anime_id = NULL){
     // $table = $this->db->get('animes');
-    if($anime_id === null){
+    if($anime_id === NULL){
       return $this->db->get('animes')->result_array();
     } else {
       return $this->db->get_where('animes', ["anime_id" => $anime_id])->result_array();
@@ -27,5 +27,16 @@ class AnimesModel extends CI_Model {
   }
   public function checkAnimeMalId($anime_mal_id){
     return $this->db->get_where('animes',['anime_mal_id' => $anime_mal_id])->num_rows();
+  }
+  public function checkAvailableAnimeOnPlayList($anime_mal_id){
+    $apl = $this->db->get_where('anime_playlist',['anime_mal_id' => $anime_mal_id])->num_rows();
+  }
+  public function getAPL($anime_mal_id){
+      $apl = $this->db->get_where('anime_playlist', ['anime_mal_id' => $anime_mal_id])->result_array();
+      return $apl;
+  }
+  public function addAPL($apl) {
+    $this->db->insert("anime_playlist", $apl);
+    return $this->db->affected_rows();
   }
 }

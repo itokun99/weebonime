@@ -90,9 +90,9 @@ function sidebarToggle(){
 	})
 }
 function submenuToggle(){
-	$('#site-sidebar .sidebar-inner ul li.has-submenu').click(function(){
+	$('#site-sidebar .sidebar-inner ul li.has-submenu > a').click(function(){
 			event.preventDefault();
-	    var submenu = $(this).toggleClass('active').find('.submenu');
+	    var submenu = $(this).parent().toggleClass('active').find('.submenu');
 	    submenu.slideToggle(150);
 	})
 }
@@ -125,9 +125,4 @@ $(document).ready(function(){
 	flatAlert();
 	addAnimateDropdrownBootstrap();
 	googleInputHasValue();
-	$('.play-data-table').DataTable({
-		 "paging":   false,
-	    "ordering": true,
-	    "info":     false
-	})
 })

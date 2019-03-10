@@ -35,7 +35,7 @@ class Animes extends REST_Controller {
     } else {
       $this->response([
         "status" => false,
-        "pesan" => "Data Gagal",
+        "pesan" => "Tidak ada di Database",
       ], REST_Controller::HTTP_NOT_FOUND);
     }
   }
@@ -141,4 +141,96 @@ class Animes extends REST_Controller {
 
   }
 
+  public function APL_get(){
+    $mal_id = $this->get('anime_mal_id');
+    
+    if($mal_id === NULL){
+      $this->response([
+        "status" => false,
+        "pesan" => "Membutuhkan 1 MAL ID",
+      ], REST_Controller::HTTP_BAD_REQUEST);
+    } else {
+      $get_apl = $this->AnimesModel->getAPL($mal_id);
+    }
+
+    if($get_apl){
+      $this->response([
+        "status" => true,
+        "pesan" => "Data APL berhasil",
+        "data" => $get_apl,
+      ], REST_Controller::HTTP_OK);
+    } else {
+      $this->response([
+        "status" => false,
+        "pesan" => "Data Tidak ditemukan atau belum ditambahkan",
+      ], REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function APL_post(){
+    $mal_id = $this->post('anime_mal_id');
+    $apl_data = $this->post('apl_data');
+    
+    $checkMAL = $this->AnimesModel->checkAnimeMalId($mal_id);
+
+    if($checkMAL == 1){
+      $test =  count($apl_data['apl_title']);
+      $countErr = 0;
+      for($i = 0; $i < count($apl_data['apl_title']); $i++){
+        $apl = [
+          'anime_mal_id' => $mal_id,
+          'anime_play_title' => $apl_data['apl_title'][$i],
+          'anime_play_link' => $apl_data['apl_link'][$i]
+        ];
+        $insertAPL = $this->AnimesModel->addAPL($apl);
+        if($insertAPL <= 0){
+          $countErr++;
+        }
+      }
+      if($countErr == 0) {
+        $this->response([
+          "status" => true,
+          "pesan" => "Semua Playlist berhasil ditambahkan",
+        ], REST_Controller::HTTP_CREATED);
+      } else {
+        $this->response([
+          "status" => false,
+          "pesan" => "Gagal menambahkan Anime Play List",
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
+    } else {
+      $this->response([
+        "status" => false,
+        "pesan" => "Playlist tidak bisa ditambahkan karena Anime tidak ada"
+      ], REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function APL_put(){
+    $play_id = $this->put('play_id');
+    $mal_id = $this->put('anime_mal_id');
+    $anime_id = $this->put('anime_id');
+    $apl_data = $this->put('apl_data');
+    
+    for($i = 0; $i < count($apl_data->apl_title); $i++){
+      $apl = [
+        'anime_mal_id' => $mal_id,
+        'anime_play_title' => $apl_data->apl_title[$i],
+        'anime_play_link' => $apl_data->apl_link[$i]
+      ];
+
+      $insertAPL = $this->AnimesModel->editAPL($apl);
+      if($insertAPL > 0) {
+        $this->response([
+          "status" => true,
+          "pesan" => "Data anime telah berhasil ditambahkan",
+        ], REST_Controller::HTTP_CREATED);
+      } else {
+        $this->response([
+          "status" => false,
+          "pesan" => "Gagal menambahkan data",
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
+    }
+  }
 }
