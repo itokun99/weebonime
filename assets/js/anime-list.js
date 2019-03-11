@@ -352,7 +352,9 @@ function animeAddPlayList(){
   });
 }
 
-function 3
+function showAPL(){
+  
+}
 
 // DOKUMEN READY STATE
 $(document).ready(function(){
