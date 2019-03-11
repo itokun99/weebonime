@@ -64,6 +64,7 @@ $route["login"] = "LoginController/login";
 $route["register"] = "LoginController/register";
 $route["admin"] = "PageController";
 $route["anime-list"] = "PageController/anime_list";
+$route["article-post"] = "PageController/article_post";
 $route["genre-list"] = "PageController/genre_list";
 $route["get-anime"] = "AnimeGrab/getAnime";
 $route["setting"] = "PageController/setting";

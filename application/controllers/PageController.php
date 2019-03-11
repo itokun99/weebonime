@@ -44,4 +44,10 @@ class PageController extends CI_Controller {
 		$this->load->view('setting', $data);
 		$this->load->view('footer', $data);
 	}
+	public function article_post(){
+		$data["page_title"] = "Article Post";
+		$this->load->view('head', $data);
+		$this->load->view('article-post', $data);
+		$this->load->view('footer', $data);
+	}
 }
