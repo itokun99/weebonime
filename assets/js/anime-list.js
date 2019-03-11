@@ -351,12 +351,9 @@ function animeAddPlayList(){
     animeAddPlayListAction();
   });
 }
-
 function showAPL(){
   
 }
-
-// DOKUMEN READY STATE
 $(document).ready(function(){
 	grabber();
   AddAnime();
