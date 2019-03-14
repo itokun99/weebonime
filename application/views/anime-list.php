@@ -118,7 +118,7 @@
 				</div>
 				<div class="flat-card-footer">
 					<div class="w-100">
-						<button type="button" class="btn btn-primary" id="addAnime">Add Anime</button>
+						<button type="button" class="btn btn-primary" id="addAnime" disabled>Add Anime</button>
 						<button type="button" class="btn btn-danger" id="resetAnime">Reset</button>
 					</div>
 				</div>
@@ -190,4 +190,10 @@
 	</div>
 </div>
 <!-- content -->
+<script type="text/javascript">
+	$("#saveAnimePlayList").click(function(){
+$("#addAnime").removeAttr('disabled')
+
+});
+</script>
 <script src="assets/js/anime-list.js"></script>

@@ -284,11 +284,11 @@ function animeAddPlayListAction(){
   var emptyVal = 0;
   var successAction = function(response){
     console.log(response);
-    openAlert({
-      alertType : "success",
-      alertTitle : "Berhasil",
-      alertMessage : "Playlist berhasil ditambahkan"
-    });
+    // openAlert({
+    //   alertType : "success",
+    //   alertTitle : "Berhasil",
+    //   alertMessage : "Playlist berhasil ditambahkan"
+    // });
   }
   var beforeSendAction = function(){
 

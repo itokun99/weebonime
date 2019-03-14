@@ -94,8 +94,10 @@
 										</a>
 
 										<div class="dropdown-menu">
+											<?php $login_user['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();?>
+										  <li><a class="dropdown-item" href="#">Hi, <?= $login_user['user']['name'];?></a></li>
 										  <li><a class="dropdown-item" href="#">Profile</a></li>
-										  <li><a class="dropdown-item" href="#">Logout</a></li>
+										  <li><a class="dropdown-item" href="auth/logout">Logout</a></li>
 										</div>
 									</span>
 								</div>
