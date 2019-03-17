@@ -118,7 +118,8 @@
 				</div>
 				<div class="flat-card-footer">
 					<div class="w-100">
-						<button type="button" class="btn btn-primary" id="addAnime" disabled>Add Anime</button>
+						<button type="button" class="btn btn-primary" id="addAnime">Add</button>
+						<button type="button" class="btn btn-primary d-none" id="editAnime">Edit</button>
 						<button type="button" class="btn btn-danger" id="resetAnime">Reset</button>
 					</div>
 				</div>
@@ -165,7 +166,7 @@
 				</div>
 				<div id="PlayListBody" class="collapse show">
 					<div class="flat-card-body">
-						<div id="playListShow" class="table-responsive">
+						<div id="playListShow">
 						
 						</div>
 					</div>
@@ -189,6 +190,46 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalPlayList" tabindex="-1" role="dialog" aria-labelledby="modalPlayList" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPlayListTitle">Anime Title : Episode 1</h5>
+        <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="playlist-modal">
+					<div id="playlist-video" class="playlist-video embed-responsive embed-responsive-16by9 mb-4">
+						<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+					</div>
+					<input type="hidden" id="play_mal_id" />
+					<div id="playlist-property">
+						<div class="form-group">
+							<input type="text" id="play_title" class="form-control" />
+							<label>Title</label>
+						</div>
+						<div class="form-group">
+							<input type="text" id="play_link" class="form-control" />
+							<label>URL</label>
+						</div>
+					</div>
+				</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
+				<button id="editAPL" type="button" class="btn btn-primary">Edit</button>
+        <button id="deleteAPL" type="button" class="btn btn-danger">Delete</button>				
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
 <!-- content -->
 <script type="text/javascript">
 	$("#saveAnimePlayList").click(function(){

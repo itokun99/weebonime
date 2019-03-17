@@ -11,8 +11,12 @@ require APPPATH . 'libraries/Format.php';
 class Animes extends REST_Controller {
 
   //load model disini
-  function __construct(){
+  public function __construct(){
     parent::__construct();
+    // header('Access-Control-Allow-Origin: *');
+    // header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+    // header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+
     $this->load->model('AnimesModel');
   }
 
@@ -20,7 +24,7 @@ class Animes extends REST_Controller {
   public function index_get(){
     $anime_id = $this->get('anime_id');
 
-    if($anime_id === null) {
+    if($anime_id === NULL) {
       $animes = $this->AnimesModel->getAnimes();
     } else {
       $animes = $this->AnimesModel->getAnimes($anime_id);
@@ -41,11 +45,28 @@ class Animes extends REST_Controller {
   }
 
   public function index_delete(){
-    $anime_id = $this->delete('anime_id');
-    if($anime_id === null){
+    $anime_id = $this->query('anime_id');
+    
+    // $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
+    // $request = json_decode($stream_clean);
+    // $ready = $request->ready;
+
+    
+    // $this->response([
+    //   "status" => false,
+    //   "pesan" => "Test",
+    //   "anime_id" => $anime_id,
+    // ], REST_Controller::HTTP_BAD_REQUEST);
+
+    // $this->response([
+    //   "anime_id" => $this->query("anime_id")
+    // ], REST_Controller::HTTP_OK );
+
+    if($anime_id === NULL){
       $this->response([
         "status" => false,
         "pesan" => "Harus ada 1 ID",
+        "anime_id" => $anime_id,
       ], REST_Controller::HTTP_BAD_REQUEST);
     } else {
       if( $this->AnimesModel->deleteAnimes($anime_id) > 0 ) {
@@ -128,9 +149,11 @@ class Animes extends REST_Controller {
     ];
 
     if($this->AnimesModel->updateAnimes($anime_data, $anime_id) > 0) {
+      $anime_title = $this->put("anime_title");
+      $pesan = "Data anime ".$anime_title." telah berhasil diedit";
       $this->response([
         "status" => true,
-        "pesan" => "Data anime telah berhasil diedit",
+        "pesan" => $pesan,
       ], REST_Controller::HTTP_OK);
     } else {
       $this->response([
@@ -208,27 +231,60 @@ class Animes extends REST_Controller {
 
   public function APL_put(){
     $play_id = $this->put('play_id');
-    $mal_id = $this->put('anime_mal_id');
-    $anime_id = $this->put('anime_id');
-    $apl_data = $this->put('apl_data');
-    
-    for($i = 0; $i < count($apl_data->apl_title); $i++){
-      $apl = [
-        'anime_mal_id' => $mal_id,
-        'anime_play_title' => $apl_data->apl_title[$i],
-        'anime_play_link' => $apl_data->apl_link[$i]
-      ];
+    $anime_mal_id = $this->put('anime_mal_id');
+    $anime_play_title = $this->put('anime_play_title');
+    $anime_play_link = $this->put('anime_play_link');
 
-      $insertAPL = $this->AnimesModel->editAPL($apl);
-      if($insertAPL > 0) {
+    $apl = [
+      'anime_mal_id' => $anime_mal_id,
+      'anime_play_title' => $anime_play_title,
+      'anime_play_link' => $anime_play_link
+    ];
+
+    $checkMAL = $this->AnimesModel->checkAnimeMalId($anime_mal_id);
+
+    if($checkMAL == 1){
+      $editAPL = $this->AnimesModel->editAPL($play_id, $apl);
+      
+      if($editAPL > 0){
+        $this->response([
+          'status' => true,
+          'pesan' => 'Playlist berhasil diedit',
+        ], REST_Controller::HTTP_OK);
+      } else {
+        $this->response([
+          'status' => false,
+          'pesan' => 'Playlist gagal diedit'
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
+    } else {
+      $this->response([
+        'status' => false,
+        'pesan' => 'Anime MAL ID tidak ditemukan'
+      ], REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  public function APL_delete(){
+    $play_id = $this->query('play_id');
+
+    if($play_id === NULL){
+      $this->response([
+        "status" => false,
+        "pesan" => "Tidak menerima Play ID untuk menghapus Playlist ini"
+      ], REST_Controller::HTTP_BAD_REQUEST);
+    } else {
+      $deleteAPL = $this->AnimesModel->deleteAPL($play_id);
+
+      if($deleteAPL > 0){
         $this->response([
           "status" => true,
-          "pesan" => "Data anime telah berhasil ditambahkan",
-        ], REST_Controller::HTTP_CREATED);
+          "pesan" => "Playlist Berhasil dihapus",
+        ], REST_Controller::HTTP_OK);
       } else {
         $this->response([
           "status" => false,
-          "pesan" => "Gagal menambahkan data",
+          "pesan" => "Gagal Menghapus playlist",
         ], REST_Controller::HTTP_BAD_REQUEST);
       }
     }

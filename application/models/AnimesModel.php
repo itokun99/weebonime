@@ -32,11 +32,20 @@ class AnimesModel extends CI_Model {
     $apl = $this->db->get_where('anime_playlist',['anime_mal_id' => $anime_mal_id])->num_rows();
   }
   public function getAPL($anime_mal_id){
+      $this->db->order_by("published", "DESC");
       $apl = $this->db->get_where('anime_playlist', ['anime_mal_id' => $anime_mal_id])->result_array();
       return $apl;
   }
   public function addAPL($apl) {
     $this->db->insert("anime_playlist", $apl);
+    return $this->db->affected_rows();
+  }
+  public function editAPL($play_id,$apl){
+    $this->db->update("anime_playlist", $apl, ['play_id' => $play_id] );
+    return $this->db->affected_rows();
+  }
+  public function deleteAPL($play_id){
+    $this->db->delete("anime_playlist", ["play_id" => $play_id]);
     return $this->db->affected_rows();
   }
 }
