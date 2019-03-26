@@ -7,6 +7,13 @@ class Auth extends CI_controller
 	{
 		parent::__construct();
 		$this->load->library('form_validation');
+		$this->load->library('session');
+
+		$isLogin = 	$this->session->userdata('userLogin');
+		
+		if(isset($isLogin)){
+     		redirect('admin');
+    	}
 
 	}
 	public function index()
@@ -38,30 +45,18 @@ class Auth extends CI_controller
 		if($user) {
 			//Jika User aktif
 			if($user['is_active'] == 1) {
-
 				//Check Passowrdnya
 				if(password_verify($password, $user['password'])) {
-
 					$data = [
-
 						'email' => $user['email'],
 						'role_id' => $user['role_id']
-
 					];
-
 					//data di simpan kedalam session
-					$this->session->set_userdata($data);
+					$this->session->set_userdata("userLogin",$data);
 					redirect('PageController');
-
-					// //Check Ketika User dah login
-					// if($this->session->userdata('PageController'))
-					// {
-  			// 		  redirect($this->session->userdata('PageController'));
-					// }
-
 				} else {
 
-				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password Salah !</div>');
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password Salah !</div>');
 					redirect('auth');
 				}
 			}
@@ -71,7 +66,7 @@ class Auth extends CI_controller
 			redirect('auth');
 		}
 	}
-
+//daftar
 	public function regis()
 	{
 		$this->form_validation->set_rules('name', 'Name', 'required|trim');
@@ -109,10 +104,15 @@ class Auth extends CI_controller
 
 	public function logout()
 	{
+		$this->session->unset_userdata($data);
 		$this->session->unset_userdata('email');
 		$this->session->unset_userdata('role_id');
 
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil keluar akun!</div>');
 			redirect('auth');
+	}
+	public function block()
+	{
+		echo 'Gabisa Akses!';
 	}
 }

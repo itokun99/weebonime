@@ -13,6 +13,7 @@ class Animes extends REST_Controller {
   //load model disini
   public function __construct(){
     parent::__construct();
+    is_logged_in();
     // header('Access-Control-Allow-Origin: *');
     // header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
     // header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
@@ -166,14 +167,15 @@ class Animes extends REST_Controller {
 
   public function APL_get(){
     $mal_id = $this->get('anime_mal_id');
+    $quality = $this->get('anime_play_quality');
     
-    if($mal_id === NULL){
+    if($mal_id === NULL || $quality == "" || $quality === NULL ){
       $this->response([
         "status" => false,
         "pesan" => "Membutuhkan 1 MAL ID",
       ], REST_Controller::HTTP_BAD_REQUEST);
     } else {
-      $get_apl = $this->AnimesModel->getAPL($mal_id);
+      $get_apl = $this->AnimesModel->getAPL($mal_id, $quality);
     }
 
     if($get_apl){
@@ -199,11 +201,18 @@ class Animes extends REST_Controller {
     if($checkMAL == 1){
       $test =  count($apl_data['apl_title']);
       $countErr = 0;
+
+      //$apl_data['apl_quality'] / Quality type
+      // 1 == 360p
+      // 2 == 480p
+      // 3 == 720p
+      // 4 == 1080p
       for($i = 0; $i < count($apl_data['apl_title']); $i++){
         $apl = [
           'anime_mal_id' => $mal_id,
           'anime_play_title' => $apl_data['apl_title'][$i],
-          'anime_play_link' => $apl_data['apl_link'][$i]
+          'anime_play_quality' => $apl_data['apl_quality'][$i],
+          'anime_play_link' => $apl_data['apl_link'][$i],
         ];
         $insertAPL = $this->AnimesModel->addAPL($apl);
         if($insertAPL <= 0){
@@ -233,11 +242,13 @@ class Animes extends REST_Controller {
     $play_id = $this->put('play_id');
     $anime_mal_id = $this->put('anime_mal_id');
     $anime_play_title = $this->put('anime_play_title');
+    $anime_play_quality = $this->put('anime_play_quality');
     $anime_play_link = $this->put('anime_play_link');
 
     $apl = [
       'anime_mal_id' => $anime_mal_id,
       'anime_play_title' => $anime_play_title,
+      'anime_play_quality' => $anime_play_quality,
       'anime_play_link' => $anime_play_link
     ];
 

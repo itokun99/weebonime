@@ -19,35 +19,53 @@ class PageController extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
+	public function __construct(){
+		parent::__construct();
+		$this->load->library('session');
+		
+		$isLogin = $this->session->userdata("userLogin");
+		if(!isset($isLogin)){
+			redirect('auth');
+		}
+}
 	// untuk buat load kontennya
 	public function index(){
 		$data["page_title"] = 'Dashboard';
 		$this->load->view('head', $data);
 		$this->load->view('dashboard', $data);
 		$this->load->view('footer', $data);
+		
 	}
 	public function anime_list(){
 		$data["page_title"] = 'Anime List';
 		$this->load->view('head', $data);
 		$this->load->view('anime-list', $data);
 		$this->load->view('footer', $data);
+		
 	}
 	public function genre_list(){
 		$data["page_title"] = 'Genre List';
 		$this->load->view('head', $data);	
 		$this->load->view('genre-list', $data);
 		$this->load->view('footer', $data);
+		
 	}
 	public function setting(){
 		$data["page_title"] = 'Setting';
 		$this->load->view('head', $data);
 		$this->load->view('setting', $data);
 		$this->load->view('footer', $data);
+	
 	}
 	public function article_post(){
 		$data["page_title"] = "Article Post";
 		$this->load->view('head', $data);
 		$this->load->view('article-post', $data);
 		$this->load->view('footer', $data);
+		
+	}
+	public function logout(){
+		$this->session->unset_userdata('userLogin');
+		redirect('auth');
 	}
 }

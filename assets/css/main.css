@@ -630,21 +630,21 @@ span.flat-alert-close {
 }
 
 /* ANIME PLAYLIST BLOCK */
-#playListShow {
+.playListShow {
     position: relative;
     max-height: 300px;
     overflow-y: auto;
 }
-#playListShow ul {
+.playListShow ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
-#playListShow ul li {
+.playListShow ul li {
     margin-bottom: 10px;
 }
 
-#playListShow ul li a {
+.playListShow ul li a {
     display: inline-block;
     width: 100%;
     background: #f5f5f5;
@@ -656,7 +656,7 @@ span.flat-alert-close {
     text-decoration : none;
     transition : .3s;
 }
-#playListShow ul li a:hover {
+.playListShow ul li a:hover {
     background : #eee;
 }
 
