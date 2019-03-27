@@ -13,7 +13,6 @@ class Animes extends REST_Controller {
   //load model disini
   public function __construct(){
     parent::__construct();
-    is_logged_in();
     // header('Access-Control-Allow-Origin: *');
     // header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
     // header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
@@ -212,7 +211,7 @@ class Animes extends REST_Controller {
           'anime_mal_id' => $mal_id,
           'anime_play_title' => $apl_data['apl_title'][$i],
           'anime_play_quality' => $apl_data['apl_quality'][$i],
-          'anime_play_link' => $apl_data['apl_link'][$i],
+          'anime_play_link' => $apl_data['apl_link'][$i]
         ];
         $insertAPL = $this->AnimesModel->addAPL($apl);
         if($insertAPL <= 0){
