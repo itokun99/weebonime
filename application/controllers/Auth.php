@@ -12,7 +12,7 @@ class Auth extends CI_controller
 		$isLogin = 	$this->session->userdata('userLogin');
 		
 		if(isset($isLogin)){
-     		redirect('admin');
+     		redirect('dashboard');
     	}
 
 	}
@@ -25,7 +25,7 @@ class Auth extends CI_controller
 
 			$data["page_title"] = 'Login';
 			$this->load->view('template/auth_header', $data);
-			$this->load->view('auth/login');
+			$this->load->view('content/auth/login');
 			$this->load->view('template/auth_footer');	
 
 		} else {
@@ -47,17 +47,17 @@ class Auth extends CI_controller
 			if($user['is_active'] == 1) {
 				//Check Passowrdnya
 				if(password_verify($password, $user['password'])) {
-					$data = [
-						'email' => $user['email'],
-						'role_id' => $user['role_id']
-					];
+					// $data = [
+					// 	'email' => $user['email'],
+					// 	'role_id' => $user['role_id']
+					// ];
 					//data di simpan kedalam session
-					$this->session->set_userdata("userLogin",$data);
-					redirect('PageController');
+					$this->session->set_userdata("userLogin",$user);
+					redirect('dashboard');
 				} else {
 
 					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Password Salah !</div>');
-					redirect('auth');
+					redirect('login');
 				}
 			}
 		} else {

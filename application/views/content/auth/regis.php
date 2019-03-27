@@ -1,24 +1,3 @@
-<!-- <div class="container">
-<div class="cp-login">
-   <div id="login-tab-content">
-      <h3>Register</h3>
-      <form class="login-form" action="<?= base_url('auth/regis')?>" method="post">
-         <input type="text" class="input" id="name" name="name" autocomplete="off" value="<?= set_value('name');?>">
-         <?= form_error('name', '<small class="text-danger pl-3">', '</small>')?>
-         <input type="text" class="input" id="user_login" name="email" autocomplete="off" placeholder="Email or Username" value="<?= set_value('email');?>">
-         <?= form_error('email', '<small class="text-danger pl-3">', '</small>')?>
-         <input id="password1" type="password" class="input" name="password1" id="user_pass" autocomplete="off" placeholder="Password">
-          <?= form_error('password1', '<small class="text-danger pl-3">', '</small>')?>
-         <input id="password2" type="password" name="password2" class="input" autocomplete="off" placeholder="Repeat Password">
-
-         <button type="submit" class="input button">Register</button>
-      </form>
-      <div class="help-text">
-        <p>Already have an account?  <a href="<?= base_url() ?>">Login</a></p>
-      </div>
-   </div>
-</div> -->
-
 <div class="wrapper fadeInDown">
   <div id="formContent">
     <!-- Tabs Titles -->

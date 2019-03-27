@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples: my-controller/index -> my_controller/index
 |   my-controller/my-method -> my_controller/my_method
 */
-$route['default_controller'] = 'PageController';
+$route['default_controller'] = 'PageController/dashboard_index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE;
 
@@ -58,18 +58,32 @@ $route['translate_uri_dashes'] = TRUE;
 | Sample REST API Routes
 | -------------------------------------------------------------------------
 */
+// example
 $route['api/example/users/(:num)'] = 'api/example/users/id/$1'; // Example 4
 $route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/example/users/id/$1/format/$3$4'; // Example 8
-$route["login"] = "Auth";
-$route['logout'] = 'PageController/logout';
-$route["register"] = "LoginController/register";
-$route["admin"] = "PageController";
-$route["anime-list"] = "PageController/anime_list";
-$route["article-post"] = "PageController/article_post";
-$route["genre-list"] = "PageController/genre_list";
-$route["get-anime"] = "AnimeGrab/getAnime";
-$route["setting"] = "PageController/setting";
+
+//RESTfull API
+// $route["get-anime"] = "AnimeGrab/getAnime";
 $route["api/grab-anime"] = "api/AnimeGrabber";
 $route["api/animes"] = "api/Animes";
 $route["api/animes/playlist"] = "api/Animes/APL";
 $route["api/user"] = "api/User";
+
+// AUTHORIZE
+$route["login"] = "Auth";
+$route['logout'] = 'PageController/logout';
+
+// DASHBOARD
+$route["dashboard"] = "PageController/dashboard_index";
+
+//ANIME
+$route["anime"] = "PageController/anime_index";
+$route["anime/genre"] = "PageController/anime_genre";
+
+// POST
+$route["post"] = "PageController/post_index";
+
+//SETTING
+$route["setting"] = "PageController/setting_index";
+
+

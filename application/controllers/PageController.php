@@ -25,47 +25,56 @@ class PageController extends CI_Controller {
 		
 		$isLogin = $this->session->userdata("userLogin");
 		if(!isset($isLogin)){
-			redirect('auth');
+			redirect('login');
 		}
 }
 	// untuk buat load kontennya
-	public function index(){
+
+	// DASHBOARD
+	public function dashboard_index(){
 		$data["page_title"] = 'Dashboard';
-		$this->load->view('head', $data);
-		$this->load->view('dashboard', $data);
-		$this->load->view('footer', $data);
+		$this->load->view('template/head', $data);
+		$this->load->view('content/dashboard/index', $data);
+		$this->load->view('template/footer', $data);
 		
 	}
-	public function anime_list(){
+
+	// ANIME
+	public function anime_index(){
 		$data["page_title"] = 'Anime List';
-		$this->load->view('head', $data);
-		$this->load->view('anime-list', $data);
-		$this->load->view('footer', $data);
+		$this->load->view('template/head', $data);
+		$this->load->view('content/anime/index', $data);
+		$this->load->view('template/footer', $data);
 		
 	}
-	public function genre_list(){
+	public function anime_genre(){
 		$data["page_title"] = 'Genre List';
-		$this->load->view('head', $data);	
-		$this->load->view('genre-list', $data);
-		$this->load->view('footer', $data);
+		$this->load->view('template/head', $data);	
+		$this->load->view('content/anime/genre-list', $data);
+		$this->load->view('template/footer', $data);
 		
 	}
-	public function setting(){
-		$data["page_title"] = 'Setting';
-		$this->load->view('head', $data);
-		$this->load->view('setting', $data);
-		$this->load->view('footer', $data);
-	
-	}
-	public function article_post(){
+
+	// POST / ARTICLE PAGE
+	public function post_index(){
 		$data["page_title"] = "Article Post";
-		$this->load->view('head', $data);
-		$this->load->view('article-post', $data);
-		$this->load->view('footer', $data);
-		
+		$this->load->view('template/head', $data);
+		$this->load->view('content/post/index', $data);
+		$this->load->view('template/footer', $data);
 	}
+
+	// SETTING
+	public function setting_index(){
+		$data["page_title"] = 'Setting';
+		$this->load->view('template/head', $data);
+		$this->load->view('content/setting/index', $data);
+		$this->load->view('template/footer', $data);
+	}
+
+	
+	// ADDITiONAL
 	public function logout(){
 		$this->session->unset_userdata('userLogin');
-		redirect('auth');
+		redirect('login');
 	}
 }

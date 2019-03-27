@@ -5,17 +5,17 @@
 	<title><?php echo $page_title ;?></title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="assets/plugins/fontawesome/css/all.min.css" />
-	<link rel="stylesheet" type="text/css" href="assets/plugins/datatables/datatables.css" />
-	<link rel="stylesheet" type="text/css" href="assets/plugins/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.css" />
-	<link rel="stylesheet" type="text/css" href="assets/plugins/datatables/Responsive-2.2.2/css/responsive.bootstrap4.css" />
-	<link rel="stylesheet" type="text/css" href="assets/plugins/datatables/RowReorder-1.2.4/css/rowReorder.bootstrap4.css" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/fontawesome/css/all.min.css" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/datatables/datatables.css" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.css" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/datatables/Responsive-2.2.2/css/responsive.bootstrap4.css" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/datatables/RowReorder-1.2.4/css/rowReorder.bootstrap4.css" />
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato" />
-	<link rel="stylesheet" type="text/css" href="assets/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/main.css" />
 
 	<!-- script -->
-	<script type="text/javascript" src="assets/plugins/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
 	<!-- script -->
 </head>
 <!-- head -->
@@ -26,17 +26,22 @@
 			<div class="sidebar-inner">
 				<div class="logo-section">
 					<ul>
-						<li><a href="#"><span class="logo site-logo"><img src="assets/images/logo/logo-dummy.png" /></span><span class="logo-text">Weebo OS</span></a></li>
+						<li><a href="#"><span class="logo site-logo"><img src="<?= base_url() ?>assets/images/logo/logo-dummy.png" /></span><span class="logo-text">Weebo OS</span></a></li>
 					</ul>
 				</div>
 				<div class="nav-section">
 					<ul>
-						<li><a href="admin"><span class="logo nav-logo"><i class="fas fa-home"></i></span><span class="logo-text">Dashboard</span></a></li>
-						<li><a href="genre-list"><span class="logo nav-logo"><i class="fas fa-pencil-alt"></i></span><span class="logo-text">Add Anime</span></a></li>
-						<li><a href="anime-list"><span class="logo nav-logo"><i class="fas fa-user-friends"></i></span><span class="logo-text">Animes</span></a></li>					
+						<li><a href="<?= base_url() ?>dashboard"><span class="logo nav-logo"><i class="fas fa-home"></i></span><span class="logo-text">Dashboard</span></a></li>
+						<li><a href="<?= base_url() ?>post"><span class="logo nav-logo"><i class="fas fa-pencil-alt"></i></span><span class="logo-text">Post</span></a></li>
+						<li class="has-submenu"><a href="#"><span class="logo nav-logo"><i class="fas fa-user-friends"></i></span><span class="logo-text">Anime</span></a>
+							<ul class='submenu'>
+								<li><a href="<?= base_url() ?>anime"><span class="logo nav-logo"><i class="fas fa-user-friends"></i></span><span class="logo-text">Anime List</span></a></li>								
+								<li><a href="#"><span class="logo nav-logo"><i class="fas fa-user-friends"></i></span><span class="logo-text">Genre List</span></a></li>								
+							</ul>
+						</li>					
 						<li class='has-submenu'><a href="#"><span class="logo nav-logo"><i class="fas fa-cog"></i></span><span class="logo-text">More</span></a>
 							<ul class="submenu">
-								<li><a href="setting"><span class="logo nav-logo"><i class="fas fa-cog"></i></span><span class="logo-text">Setting</span></a></li>
+								<li><a href="<?= base_url() ?>setting"><span class="logo nav-logo"><i class="fas fa-cog"></i></span><span class="logo-text">Setting</span></a></li>
 							</ul>
 						</li>
 					</ul>
@@ -90,14 +95,13 @@
 									
 									<span class="dropdown user-log flat-notif">
 										<a class="user-pic-toggle" id="profileDrop" data-toggle="dropdown" href="#">
-											<img class='user-pic square small' src="assets/images/logo/user-dummy.png" />
+											<img class='user-pic square small' src="<?= base_url() ?>assets/images/logo/user-dummy.png" />
 										</a>
 
 										<div class="dropdown-menu">
-											<?php $login_user['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();?>
-										  <li><a class="dropdown-item" href="#">Hi, <?= $login_user['user']['name'];?></a></li>
+										  <li><a class="dropdown-item" href="#">Halo, <?php echo $this->session->userdata('userLogin')['name'] ?>!</a></li>
 										  <li><a class="dropdown-item" href="#">Profile</a></li>
-										  <li><a class="dropdown-item" href="logout">Logout</a></li>
+										  <li><a class="dropdown-item" href="<?= base_url() ?>logout">Logout</a></li>
 										</div>
 									</span>
 								</div>
