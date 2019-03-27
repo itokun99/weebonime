@@ -140,6 +140,10 @@
 									<label>Eps Title</label>
 								</div>
 								<div class="form-group">
+									<input class="form-control play-anime-quality" type="text" name="anime_play_quality" />
+									<label>Quality</label>
+								</div>
+								<div class="form-group">
 									<input class="form-control play-anime-link" type="text" name="anime_play_link" />
 									<label>Player Link</label>
 								</div>
@@ -160,19 +164,60 @@
 				</div>
 			</div>
 
-			<div class="flat-card">
-				<div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody">
-					<h4 class="flat-card-title">Add Player List</h4>
+			<div class="flat-card mb-4">
+				<div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody1">
+					<h4 class="flat-card-title">360p</h4>
 				</div>
-				<div id="PlayListBody" class="collapse show">
+				<div id="PlayListBody1" class="collapse show">
 					<div class="flat-card-body">
-						<div id="playListShow">
+						<div class="playListShow" id="playListShow1">
 						
 						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="flat-card mb-4">
+				<div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody2">
+					<h4 class="flat-card-title">480p</h4>
+				</div>
+				<div id="PlayListBody2" class="collapse show">
+					<div class="flat-card-body">
+						<div class="playListShow" id="playListShow2">
+						
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="flat-card mb-4">
+				<div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody3">
+					<h4 class="flat-card-title">720p</h4>
+				</div>
+				<div id="PlayListBody3" class="collapse show">
+					<div class="flat-card-body">
+						<div class="playListShow" id="playListShow3">
+						
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="flat-card mb-4">
+				<div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody4">
+					<h4 class="flat-card-title">1080p</h4>
+				</div>
+				<div id="PlayListBody4" class="collapse show">
+					<div class="flat-card-body">
+						<div class="playListShow" id="playListShow4">
+						
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
+		
 		
 		<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="flat-card">
@@ -211,6 +256,10 @@
 						<div class="form-group">
 							<input type="text" id="play_title" class="form-control" />
 							<label>Title</label>
+						</div>
+						<div class="form-group">
+							<input type="text" id="play_quality" class="form-control" />
+							<label>Quality</label>
 						</div>
 						<div class="form-group">
 							<input type="text" id="play_link" class="form-control" />

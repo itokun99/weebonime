@@ -269,7 +269,7 @@ function deleteAPLB(){
   });
 }
 function addAnimePlayListFormAction(){
-  var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group text-right"><button class="btn btn-danger delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
+  var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-quality" type="text" name="anime_play_quality" /><label>Quality</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group text-right"><button class="btn btn-danger delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
   $('#animePlayListForm').append(aplf_htmlDOM);
   setTimeout(googleInputHasValue, 500 );
   deleteAPLB();
@@ -288,6 +288,7 @@ function animeAddPlayListAction(){
   var type = "POST";
   var arr_apl_title = [];
   var arr_apl_link = [];
+  var arr_apl_quality = [];
   var emptyVal = 0;
   var successAction = function(response){
     if(response.status === true){
@@ -333,7 +334,16 @@ function animeAddPlayListAction(){
     if(value == ""){
       emptyVal = 1;
     } else {
-    arr_apl_link.push(value);
+      arr_apl_link.push(value);
+    }
+  });
+
+  $('.play-anime-quality').each(function(){
+    var value = $(this).val();
+    if(value == ""){
+      emptyVal = 1;
+    } else {
+    arr_apl_quality.push(value);
     }
   });
 
@@ -341,6 +351,7 @@ function animeAddPlayListAction(){
    anime_mal_id : $('[name="anime_mal_id"]').val(),
    apl_data : {
      apl_title : arr_apl_title,
+     apl_quality : arr_apl_quality,
      apl_link : arr_apl_link
    }
  }
@@ -535,12 +546,27 @@ function showPlayListAction(anime_mal_id){
       var j = 1;
 
       html += "<ul>";
+     
       for(var i = 0; i < dataAPL.length; i++){
-        html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+dataAPL[i].anime_mal_id+"' data-play-id='"+dataAPL[i].play_id+"' data-pub='"+dataAPL[i].published+"' data-url='"+dataAPL[i].anime_play_link+"'>"+dataAPL[i].anime_play_title+"</a></li>";
+        html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+dataAPL[i].anime_mal_id+"' data-play-id='"+dataAPL[i].play_id+"' data-pub='"+dataAPL[i].published+"' data-url='"+dataAPL[i].anime_play_link+"' data-quality='"+dataAPL[i].anime_play_quality+"'>"+dataAPL[i].anime_play_title+"</a></li>";
       }
       html += "</ul>";
-
-      $("#playListShow").html(html);
+      
+      for(var i = 0; i < dataAPL.length; i++){
+        var quality = dataAPL[i].anime_play_quality;
+        if( quality == 1){
+          $("#playListShow1").html(html);
+        }
+        if( quality == 2){
+          $("#playListShow2").html(html);
+        }
+        if( quality == 3){
+          $("#playListShow3").html(html);
+        }
+        if( quality == 4){
+          $("#playListShow4").html(html);          
+        }
+      }
       setTimeout(aplPreview(), 500);
     }
     else {
@@ -556,11 +582,14 @@ function showPlayListAction(anime_mal_id){
     $("#playListShow").html("<div class='text-center'><span>Tidak ada playlist</span></div>");
   }
 
-  ajaxSendJSON(url, type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url+"&anime_play_quality=1", type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url+"&anime_play_quality=2", type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url+"&anime_play_quality=3", type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url+"&anime_play_quality=4", type, {}, beforeSendAction, successAction, errorAction);
 
 }
 
-function aplPreviewAction(anime_title, title, url, mal_id){
+function aplPreviewAction(anime_title, title, url, mal_id, quality){
   $.fn.hasValue = function(){
     if(this.val() != ""){
       this.siblings("label").addClass("has-val");
@@ -572,6 +601,7 @@ function aplPreviewAction(anime_title, title, url, mal_id){
   $('#modalPlayListTitle').text(modal_title);
   $('#playlist-video').html(video_wrapper);
   $('#play_link').val(url).hasValue();
+  $('#play_quality').val(quality).hasValue();
   $('#play_title').val(title).hasValue();
   $('#play_mal_id').val(mal_id);
 
@@ -583,10 +613,11 @@ function aplPreview(){
     var anime_title = $('[name="anime_title"]').val();
     var play_id = $(this).attr('data-play-id');
     var mal_id = $(this).attr('data-mal-id');
+    var quality = $(this).attr("data-quality");
 
     $('#editAPL').attr('data-id', play_id);
     $('#deleteAPL').attr('data-id', play_id);
-    aplPreviewAction(anime_title, title, url, mal_id);
+    aplPreviewAction(anime_title, title, url, mal_id, quality);
   })
   $('.modal-close').on('click', function(){
     $('#playlist-video').html("");
@@ -600,6 +631,7 @@ function editAPLAction(play_id){
     play_id : play_id,
     anime_mal_id : $('#play_mal_id').val(),
     anime_play_title : $('#play_title').val(),
+    anime_play_quality : $('#play_quality').val(),
     anime_play_link : $('#play_link').val(),
   }
 
