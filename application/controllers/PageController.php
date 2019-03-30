@@ -36,7 +36,6 @@ class PageController extends CI_Controller {
 		$this->load->view('template/head', $data);
 		$this->load->view('content/dashboard/index', $data);
 		$this->load->view('template/footer', $data);
-		
 	}
 
 	// ANIME

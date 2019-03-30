@@ -2,12 +2,15 @@
 
 class AnimesModel extends CI_Model {
 
-  public function getAnimes($anime_id = NULL){
-    // $table = $this->db->get('animes');
-    if($anime_id === NULL){
+  public function getAnimes($anime_id = NULL, $anime_mal_id = NULL){
+    if($anime_id === NULL && $anime_mal_id === NULL){
       return $this->db->get('animes')->result_array();
+    } else if($anime_id === NULL || $anime_id === "") {
+      return $this->db->get_where('animes', ["anime_mal_id" => $anime_mal_id])->result_array();
+    } else if($anime_mal_id === NULL || $anime_mal_id === ""){
+      return $this->db->get_where('animes', ["anime_id" => $anime_id])->result_array();      
     } else {
-      return $this->db->get_where('animes', ["anime_id" => $anime_id])->result_array();
+      return $this->db->get_where('animes', ["anime_id" => $anime_id, "anime_mal_id" => $anime_mal_id])->result_array();            
     }
   }
 
@@ -48,6 +51,7 @@ class AnimesModel extends CI_Model {
     $this->db->delete("anime_playlist", ["play_id" => $play_id]);
     return $this->db->affected_rows();
   }
+
   
   public function getDownload($mal_id, $quality){
     if($quality === NULL){
@@ -74,4 +78,17 @@ class AnimesModel extends CI_Model {
     return $this->db->affected_rows();
   }
 
+
+  public function AnimeCounter(){
+    $count = $this->db->query("SELECT COUNT(anime_mal_id) FROM animes")->result_array();
+    return $count[0]['COUNT(anime_mal_id)'];
+  }
+  public function AnimeCounter2(){
+    $count = $this->db->query("SELECT COUNT(*) FROM anime_counter")->result_array();
+    $data = [
+      'counter' => 1
+    ];
+    $this->db->insert('anime_counter', $data);
+    return $count[0]['COUNT(*)'];
+  }
 }

@@ -23,11 +23,12 @@ class Animes extends REST_Controller {
   // buat fungsi api controller disini nanti tinggal copas aja
   public function index_get(){
     $anime_id = $this->get('anime_id');
+    $anime_mal_id = $this->get('anime_mal_id');
 
-    if($anime_id === NULL) {
+    if($anime_id === NULL && $anime_mal_id === NULL) {
       $animes = $this->AnimesModel->getAnimes();
     } else {
-      $animes = $this->AnimesModel->getAnimes($anime_id);
+      $animes = $this->AnimesModel->getAnimes($anime_id, $anime_mal_id);
     }
     // var_dump($animes);
     if($animes) {
@@ -437,4 +438,33 @@ class Animes extends REST_Controller {
   }
 
   
+  public function AutoGrabCounter_get(){
+    $counter = $this->AnimesModel->AnimeCounter();
+    if(isset($counter)){
+      $this->response([
+        "status" => true,
+        "data" => $counter
+      ], REST_Controller::HTTP_OK);
+    } else {
+      $this->response([
+        "status" => false,
+        "data" => "Data Base Error"
+      ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+  }
+
+  public function AutoGrabCounter2_get(){
+    $counter = $this->AnimesModel->AnimeCounter2();
+    if(isset($counter)){
+      $this->response([
+        "status" => true,
+        "data" => $counter
+      ], REST_Controller::HTTP_OK);
+    } else {
+      $this->response([
+        "status" => false,
+        "data" => "Data Base Error"
+      ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+  }
 }
