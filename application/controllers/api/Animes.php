@@ -301,6 +301,143 @@ class Animes extends REST_Controller {
     }
   }
 
+  //Download
+  public function Download_get() {
+    $mal_id = $this->get('anime_mal_id');
+    $downloadNime = $this->get('anime_download_quality');
+
+    if($mal_id === NULL ){
+		  $this->response([
+		  	"status" => false,
+		  	"pesan" => "Gak ada id mal yang cocok",
+		], REST_Controller::HTTP_BAD_REQUEST);
+    } else {
+       $Download_get = $this->AnimesModel->getDownload($mal_id, $downloadNime);
+	  if(count($Download_get) > 0){
+		  $this->response([
+			  "status" => true,
+				"pesan" => "Sukses",
+				"data" => $Download_get,
+		], REST_Controller::HTTP_OK);
+		} else {
+			$this->response([
+				"status" => false,
+				"pesan" => "NOT_FOUND",
+				"data" => $Download_get,
+		  	], REST_Controller::HTTP_OK);
+		  }
+	  }
+  }
+
+  public function Download_delete(){
+    $dlwn_id = $this->query('anime_download_id');
+
+    if($dlwn_id === NULL){
+      $this->response([
+        "status" => false,
+        "pesan" => "Gagal Menghapus File Download"
+      ], REST_Controller::HTTP_BAD_REQUEST);
+    } else {
+      $deleteDownload = $this->AnimesModel->deleteDownload($dlwn_id);
+
+      if($deleteDownload > 0){
+        $this->response([
+          "status" => true,
+          "pesan" => "File Download Berhasil Di Hapus",
+        ], REST_Controller::HTTP_OK);
+      } else {
+        $this->response([
+          "status" => false,
+          "pesan" => "Tidak ada ID yang Cocok",
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
+    }
+  }
+
+  public function Download_post(){
+    $mal_id = $this->post('anime_mal_id');
+    $dwnld_data = $this->post('dwnld_data');
+    
+    $checkMAL = $this->AnimesModel->checkAnimeMalId($mal_id);
+
+    if($checkMAL == 1){
+      $test =  count($dwnld_data['dwnld_title']);
+      $countErr = 0;
+
+      for($i = 0; $i < count($dwnld_data['dwnld_link']); $i++){
+        $dwnld = [
+          'anime_mal_id' => $mal_id,
+          'anime_download_name_server' => $dwnld_data['dwnld_title'][$i],
+          'anime_download_link' => $dwnld_data['dwnld_link'][$i],
+          'anime_download_size' => $dwnld_data['dwnld_size'][$i],
+          'anime_download_quality' => $dwnld_data['dwnld_quality'][$i]
+        ];
+        $insertAPL = $this->AnimesModel->addDownload($dwnld);
+        if($insertDownload <= 0){
+          $countErr++;
+        }
+      }
+      if($countErr == 0) {
+        $this->response([
+          "status" => true,
+          "pesan" => "File Download berhasil ditambahkan",
+        ], REST_Controller::HTTP_CREATED);
+      } else {
+        $this->response([
+          "status" => false,
+          "pesan" => "Gagal menambahkan File Download",
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
+    } else {
+      $this->response([
+        "status" => false,
+        "pesan" => "File Download tidak bisa ditambahkan karena Anime tidak ada"
+      ], REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+  
+  public function Download_put(){
+
+    $anime_download_id = $this->put('anime_download_id');
+    $anime_mal_id = $this->put('anime_mal_id');
+    $anime_download_name_server = $this->put('anime_download_name_server');
+    $anime_download_link = $this->put('anime_download_link');
+    $anime_download_size = $this->put('anime_download_size');
+    $anime_download_quality = $this->put('anime_download_quality');
+
+    $DL = [
+      'anime_mal_id' => $anime_mal_id,
+      'anime_download_name_server'  => $anime_download_name_server,
+      'anime_download_link' => $anime_download_link,
+      'anime_download_size' => $anime_download_size,
+      'anime_download_quality' => $anime_download_quality,
+    ];
+
+    $checkMAL = $this->AnimesModel->checkAnimeMalId($anime_mal_id);
+
+    if($checkMAL == 1){
+      $editDwnld = $this->AnimesModel->editDwnld($anime_download_id, $DL);
+      
+      if($editDwnld > 0){
+        $this->response([
+          'status' => true,
+          'pesan' => 'File Download berhasil diedit',
+        ], REST_Controller::HTTP_OK);
+      } else {
+        $this->response([
+          'status' => false,
+          'pesan' => 'File Download gagal diedit'
+        ], REST_Controller::HTTP_BAD_REQUEST);
+      }
+    } else {
+      $this->response([
+        'status' => false,
+        'pesan' => 'Anime MAL ID tidak ditemukan'
+      ], REST_Controller::HTTP_NOT_FOUND);
+    }
+  }
+
+  
   public function AutoGrabCounter_get(){
     $counter = $this->AnimesModel->AnimeCounter();
     if(isset($counter)){
