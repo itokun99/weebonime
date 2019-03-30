@@ -48,4 +48,30 @@ class AnimesModel extends CI_Model {
     $this->db->delete("anime_playlist", ["play_id" => $play_id]);
     return $this->db->affected_rows();
   }
+  
+  public function getDownload($mal_id, $quality){
+    if($quality === NULL){
+      $data = $this->db->get_where('anime_download', ['anime_mal_id' => $mal_id]);
+    } else {
+      $data = $this->db->get_where('anime_download', ['anime_mal_id' => $mal_id, 'anime_download_quality' => $quality]);
+    }
+    return $data->result_array();
+  }
+
+  public function deleteDownload($dlwn_id){
+    $this->db->delete("anime_download", ["anime_download_id" => $dlwn_id]);
+    return $this->db->affected_rows();
+  }
+
+  public function addDownload($download) {
+    $this->db->insert("anime_download", $download);
+    return $this->db->affected_rows();
+  }
+
+  //PUT
+  public function editDwnld($anime_download_id, $DL){
+    $this->db->update("anime_download", $DL, ['anime_download_id' => $anime_download_id] );
+    return $this->db->affected_rows();
+  }
+
 }

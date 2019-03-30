@@ -268,6 +268,7 @@ function deleteAPLB(){
     $(this).parent().parent().remove()
   });
 }
+
 function addAnimePlayListFormAction(){
   var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-quality" type="text" name="anime_play_quality" /><label>Quality</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group text-right"><button class="btn btn-danger delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
   $('#animePlayListForm').append(aplf_htmlDOM);
@@ -717,6 +718,25 @@ function deleteAPL(){
     deleteAPLAction(play_id)
   })
 }
+function deleteDL(){
+  $('.delete-download').on('click', function(){
+    $(this).parent().parent().remove()
+  });
+}
+function addAnimeDownloadFileAction(){
+  var dL_htmlDOM = '<div class="form-group"><input class="form-control download-anime-title" type="text" name="anime_download_name_server"/><label>Name Server</label></div><div class="form-group"><input class="form-control download-anime-link" type="text" name="anime_download_link"/><label>link</label></div><div class="form-group"><input class="form-control download-anime-size" type="text" name="anime_download_size"/><label>Size</label></div><div class="form-group"><input class="form-control download-anime-kualitas" type="text" name="anime_download_quality"/><label>Quality</label></div><div class="form-group text-right"><button class="btn btn-danger delete-download">Delete</button> </div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
+  $('#AnimeDownloadFile').append(dL_htmlDOM);
+  setTimeout(googleInputHasValue, 500 );
+  deleteDL();
+  console.log(dL_htmlDOM);
+}
+
+function addAnimeDownloadFile(){
+  $("#AnimeDownloadFile").on("click", function(){
+    addAnimeDownloadFileAction();
+  })
+}
+
 
 $(document).ready(function(){
 	grabber();
@@ -731,4 +751,8 @@ $(document).ready(function(){
   aplPreview();
   editAPL();
   deleteAPL();
+  //irva
+  addAnimeDownloadFileAction();
+  addAnimeDownloadFile();
+  deleteDL();
 });
