@@ -715,6 +715,7 @@ function deleteAPLAction(play_id){
 function deleteAPL(){
   $("#deleteAPL").on('click', function(){
     var play_id = $(this).attr('data-id');
+    console.log(play_id);
     deleteAPLAction(play_id)
   })
 }

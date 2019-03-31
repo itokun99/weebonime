@@ -19,19 +19,43 @@ class Animes extends REST_Controller {
 
     $this->load->model('AnimesModel');
   }
-
+  
   // buat fungsi api controller disini nanti tinggal copas aja
   public function index_get(){
     $anime_id = $this->get('anime_id');
     $anime_mal_id = $this->get('anime_mal_id');
+    $order_by = $this->get('order_by');
 
     if($anime_id === NULL && $anime_mal_id === NULL) {
-      $animes = $this->AnimesModel->getAnimes();
+      $animes = $this->AnimesModel->getAnimes(NULL, NULL, $order_by);
     } else {
-      $animes = $this->AnimesModel->getAnimes($anime_id, $anime_mal_id);
+      $animes = $this->AnimesModel->getAnimes($anime_id, $anime_mal_id, $order_by);
     }
-    // var_dump($animes);
     if($animes) {
+      for($i = 0; $i < count($animes); $i++){
+        $animes[$i]["anime_play_data"] = [];
+        $animes[$i]["anime_play_data"]["play360"] = [];
+        $animes[$i]["anime_play_data"]["play480"] = [];
+        $animes[$i]["anime_play_data"]["play720"] = [];
+        $animes[$i]["anime_play_data"]["play1080"] = [];
+        $anime360data = $this->AnimesModel->getAPL($animes[$i]["anime_mal_id"], '1');
+        $anime480data = $this->AnimesModel->getAPL($animes[$i]["anime_mal_id"], '2');
+        $anime720data = $this->AnimesModel->getAPL($animes[$i]["anime_mal_id"], '3');
+        $anime1080data = $this->AnimesModel->getAPL($animes[$i]["anime_mal_id"], '4');
+        if(count($anime360data) > 0){
+          $animes[$i]["anime_play_data"]["play360"] = $anime360data;
+        }
+        if(count($anime480data) > 0) {
+          $animes[$i]["anime_play_data"]["play480"] = $anime480data;          
+        }
+        if(count($anime720data) > 0) {
+          $animes[$i]["anime_play_data"]["play720"] = $anime720data;          
+        }
+        if(count($anime1080data) > 0) {
+          $animes[$i]["anime_play_data"]["play1080"] = $anime1080data;          
+        }
+      }
+      // print_r($animes);
       $this->response([
         "status" => true,
         "pesan" => "Data sukses",
@@ -44,25 +68,10 @@ class Animes extends REST_Controller {
       ], REST_Controller::HTTP_NOT_FOUND);
     }
   }
-
+  
   public function index_delete(){
     $anime_id = $this->query('anime_id');
     
-    // $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
-    // $request = json_decode($stream_clean);
-    // $ready = $request->ready;
-
-    
-    // $this->response([
-    //   "status" => false,
-    //   "pesan" => "Test",
-    //   "anime_id" => $anime_id,
-    // ], REST_Controller::HTTP_BAD_REQUEST);
-
-    // $this->response([
-    //   "anime_id" => $this->query("anime_id")
-    // ], REST_Controller::HTTP_OK );
-
     if($anime_id === NULL){
       $this->response([
         "status" => false,
