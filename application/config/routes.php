@@ -67,6 +67,7 @@ $route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/example/users/
 $route["api/grab-anime"] = "api/AnimeGrabber";
 $route["api/animes"] = "api/Animes";
 $route["api/animes/playlist"] = "api/Animes/APL";
+$route["api/animes/downloadlist"] = "api/Animes/Download";
 $route["api/user"] = "api/User";
 $route["api/counter"] = "api/Animes/AutoGrabCounter";
 $route["api/counter2"] = "api/Animes/AutoGrabCounter2";

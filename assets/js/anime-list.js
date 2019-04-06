@@ -195,6 +195,46 @@ function posterCheker(){
 	})	
 }
 
+function animelistDeleteAction(anime_id) {
+	var type = "DELETE";
+  var url = "api/animes?anime_id="+anime_id;
+	var successAction = function(response) {
+		if(response.status === true) {
+			openAlert({
+				alertType : "success",
+				alertTitle : "Sukses!!",
+				alertMessage : "1 Row di Tabel Berhasil di hapus"
+			});
+			animeListShowAction($('').val());
+		} else {
+			console.log(response);
+			openAlert({
+				alertType : "Danger",
+				alertTitle : "Gagal!!",
+				alertMessage : "Tidak bisa menghapus, cek console"
+			});
+		}
+	}
+
+	var beforeSendAction = function(){
+		console.log("Proses Delete");
+	}
+	var errorAction = function(){
+		openAlert({
+			alertType	: "Danger",
+			alertTitle	: "Gagal",
+			alertMessage : "Tidak bisa menghapus, cek console!"
+		});
+	}
+	ajaxSendJSON(url, type, {}, beforeSendAction, successAction, errorAction);
+}
+ 
+ function deleteAnimelist(){
+ 	$("#dlAnimelist").on('click', function(){
+ 		var anime_id = $(this).attr("data-id");
+ 		animelistDeleteAction(anime_id);
+ 	})
+ }
 
 function animeListShowAction(){
   var url = "api/animes";
@@ -205,11 +245,11 @@ function animeListShowAction(){
     var status = response.status;
     var data = response.data;
     var htmlDOM = "";
-    var tableHeadArray = ["No", "MAL ID", "Title", "Type", "Score", "Genre", "Eps" ];
+    var tableHeadArray = ["No", "MAL ID", "Title", "Type", "Score", "Genre", "Eps", "" ];
     var targetDOM = $("#animeListShow");
 
     if(status === true){
-      htmlDOM += "<table class='play-data-table table-hover'><thead class='bg-dark'>";
+      htmlDOM += "<table class='play-data-table table-hover'><thead class='bg-tabel'>";
       htmlDOM +="<tr style='color:#fff;text-align:center'>"
         for(var i = 0; i < tableHeadArray.length; i++){
           htmlDOM += "<th>"+tableHeadArray[i]+"</th>";
@@ -227,6 +267,7 @@ function animeListShowAction(){
           htmlDOM += "<td>"+data[i].anime_score+"</td>";
           htmlDOM += "<td>"+data[i].anime_genre+"</td>";
           htmlDOM += "<td>"+data[i].anime_episode+"</td>";
+          htmlDOM += "<td><button type='button' id='dlAnimelist' class='btn btn-danger'>Delete</button></td>";
           htmlDOM += "</tr>";
           j++
         }
@@ -270,7 +311,7 @@ function deleteAPLB(){
 }
 
 function addAnimePlayListFormAction(){
-  var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-quality" type="text" name="anime_play_quality" /><label>Quality</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group text-right"><button class="btn btn-danger delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
+  var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-quality" type="text" name="anime_play_quality" /><label>Quality</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group"><input class="form-control anime_thumb" type="text" name="anime_thumb" /><label>Thumbnail</label></div><div class="form-group text-right"><button class="btn btn-danger delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
   $('#animePlayListForm').append(aplf_htmlDOM);
   setTimeout(googleInputHasValue, 500 );
   deleteAPLB();
@@ -290,6 +331,7 @@ function animeAddPlayListAction(){
   var arr_apl_title = [];
   var arr_apl_link = [];
   var arr_apl_quality = [];
+  var arr_apl_thumb = [];
   var emptyVal = 0;
   var successAction = function(response){
     if(response.status === true){
@@ -307,7 +349,7 @@ function animeAddPlayListAction(){
         alertMessage : "Tidak bisa menambahkan Playlist, Cek konsol!"
       });
     }
-  }
+  } 
   var beforeSendAction = function(){
 
   }
@@ -348,12 +390,22 @@ function animeAddPlayListAction(){
     }
   });
 
+  $('.anime_thumb').each(function(){
+    var value = $(this).val();
+    if(value == ""){
+      emptyVal = 1;
+    } else {
+    arr_apl_thumb.push(value);
+    }
+  });
+
  var apl_data = {
    anime_mal_id : $('[name="anime_mal_id"]').val(),
    apl_data : {
      apl_title : arr_apl_title,
      apl_quality : arr_apl_quality,
-     apl_link : arr_apl_link
+     apl_link : arr_apl_link,
+     apl_thumb : arr_apl_thumb,
    }
  }
 
@@ -428,7 +480,12 @@ function selectAnimeAction(anime_id){
         scrollTop : 0
       },500)
       var anime_mal_id = $("[name='anime_mal_id']").val();
-      setTimeout(showPlayListAction(anime_mal_id), 500)
+      setTimeout(showPlayListAction(anime_mal_id), 500);
+      $('html, body').animate({
+        scrollTop : 0
+      },500)
+      var anime_mal_id = $("[name='anime_mal_id']").val();
+      setTimeout(showDownloadListAction(anime_mal_id), 500)
 
     } else {
       console.log(response)
@@ -549,7 +606,7 @@ function showPlayListAction(anime_mal_id){
       html += "<ul>";
      
       for(var i = 0; i < dataAPL.length; i++){
-        html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+dataAPL[i].anime_mal_id+"' data-play-id='"+dataAPL[i].play_id+"' data-pub='"+dataAPL[i].published+"' data-url='"+dataAPL[i].anime_play_link+"' data-quality='"+dataAPL[i].anime_play_quality+"'>"+dataAPL[i].anime_play_title+"</a></li>";
+        html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+dataAPL[i].anime_mal_id+"' data-play-id='"+dataAPL[i].play_id+"' data-pub='"+dataAPL[i].published+"' data-thumb='"+dataAPL[i].anime_thumb+"' data-url='"+dataAPL[i].anime_play_link+"' data-quality='"+dataAPL[i].anime_play_quality+"'>"+dataAPL[i].anime_play_title+"</a></li>";
       }
       html += "</ul>";
       
@@ -590,7 +647,7 @@ function showPlayListAction(anime_mal_id){
 
 }
 
-function aplPreviewAction(anime_title, title, url, mal_id, quality){
+function aplPreviewAction(anime_title, title, url, mal_id, quality, thumb){
   $.fn.hasValue = function(){
     if(this.val() != ""){
       this.siblings("label").addClass("has-val");
@@ -598,12 +655,13 @@ function aplPreviewAction(anime_title, title, url, mal_id, quality){
   }
   
   var modal_title = anime_title + " : " + title;
-  var video_wrapper = '<iframe class="embed-responsive-item" src="'+url+'" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen></iframe>';
+  var video_wrapper = '<video class="js-player" controls crossorigin oncontextmenu="return false;" controlsList="nodownload" playsinline><source src="'+url+'" type="video/mp4"></video>';
   $('#modalPlayListTitle').text(modal_title);
   $('#playlist-video').html(video_wrapper);
   $('#play_link').val(url).hasValue();
   $('#play_quality').val(quality).hasValue();
   $('#play_title').val(title).hasValue();
+  $('#anime_thumb').val(thumb).hasValue();
   $('#play_mal_id').val(mal_id);
 
 }
@@ -612,13 +670,18 @@ function aplPreview(){
     var title = $(this).text();
     var url = $(this).attr('data-url');
     var anime_title = $('[name="anime_title"]').val();
-    var play_id = $(this).attr('data-play-id');
+    var play_id = $(this).attr('data-play-id'); 
     var mal_id = $(this).attr('data-mal-id');
     var quality = $(this).attr("data-quality");
+    var thumb = $(this).attr("data-thumb");
+    setTimeout(function(){
+      var player = new Plyr('.js-player');  
+    },500)
+    
 
     $('#editAPL').attr('data-id', play_id);
     $('#deleteAPL').attr('data-id', play_id);
-    aplPreviewAction(anime_title, title, url, mal_id, quality);
+    aplPreviewAction(anime_title, title, url, mal_id, quality, thumb);
   })
   $('.modal-close').on('click', function(){
     $('#playlist-video').html("");
@@ -634,6 +697,7 @@ function editAPLAction(play_id){
     anime_play_title : $('#play_title').val(),
     anime_play_quality : $('#play_quality').val(),
     anime_play_link : $('#play_link').val(),
+    anime_thumb  : $('#anime_thumb').val(),
   }
 
   var successAction = function(response){
@@ -718,31 +782,341 @@ function deleteAPL(){
     deleteAPLAction(play_id)
   })
 }
+function showDownloadListAction(anime_mal_id) {
+  if(typeof(anime_mal_id === "undefined") || anime_mal_id == "" || anime_mal_id === null) {
+    anime_mal_id = $('[name="anime_mal_id"]').val();
+  }
+
+  var param = "anime_mal_id";
+  var type  = "GET";
+  var url   = "api/animes/Download?"+param+"="+anime_mal_id;
+  var successAction = function(response) {
+    if(response.status === true) {
+      console.log(response);
+      var html  = "";
+      var SendDownloadData  = response.data;
+      var j = 1;
+
+      html += "<ul>";
+
+      for(var i = 0; i < SendDownloadData.length; i++) {
+        html +="<li><a class='Download-preview' data-toggle='modal' data-target='#modalDownloadList' href='javascript:void(0)' data-mal-id='"+SendDownloadData[i].anime_mal_id+"' data-download-id='"+SendDownloadData[i].anime_download_id+"' data-url='"+SendDownloadData[i].anime_download_link+"' data-size='"+SendDownloadData[i].anime_download_size+"' data-kualitas='"+SendDownloadData[i].anime_download_quality+"'>"+SendDownloadData[i].anime_download_name_server+"</a></li>";
+      }
+      // console.log(html);
+      html += "</ul>";
+
+      for(var i = 0; i < SendDownloadData.length; i++) {
+        var kualitas = SendDownloadData[i].anime_download_quality;
+          if(kualitas == 1) {
+            $("#DownloadListShow1").html(html);
+          }
+          if(kualitas == 2) {
+            $("#DownloadListShow2").html(html);
+          }
+          if(kualitas == 3) {
+            $("#DownloadListShow3").html(html);
+          }
+          if(kualitas == 4) {
+            $("#DownloadListShow4").html(html);
+          }
+      }
+      setTimeout(dwlPreview(), 500);
+    }
+     else {
+       console.log(response);
+       $("#DownloadListShow").html("<div class='text-center'><span>Tidak ada DownloadList</span></div>"); 
+     }
+  }
+  var beforeSendAction = function(response) {
+    console.log("Loading to get DownloadList..");
+  }
+  var errorAction = function(response) {
+    console.log("masukss")
+    console.log(response);
+    $("#DownloadListShow").html("<div class='text-center'><span>Tidak ada DownloadList</span></div>");
+  }
+
+  //sendAJAX_DATA
+  ajaxSendJSON(url+"&anime_download_quality=1", type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url+"&anime_download_quality=2", type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url+"&anime_download_quality=3", type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url+"&anime_download_quality=4", type, {}, beforeSendAction, successAction, errorAction);
+
+  //EndShowDownloadListAction
+}
+
 function deleteDL(){
   $('.delete-download').on('click', function(){
     $(this).parent().parent().remove()
   });
 }
+
 function addAnimeDownloadFileAction(){
-  var dL_htmlDOM = '<div class="form-group"><input class="form-control download-anime-title" type="text" name="anime_download_name_server"/><label>Name Server</label></div><div class="form-group"><input class="form-control download-anime-link" type="text" name="anime_download_link"/><label>link</label></div><div class="form-group"><input class="form-control download-anime-size" type="text" name="anime_download_size"/><label>Size</label></div><div class="form-group"><input class="form-control download-anime-kualitas" type="text" name="anime_download_quality"/><label>Quality</label></div><div class="form-group text-right"><button class="btn btn-danger delete-download">Delete</button> </div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
+  var dL_htmlDOM = '<div class="dL-block"><div class="form-group"><input class="form-control download-anime-title" type="text" name="anime_download_name_server"/><label>Name Server</label></div><div class="form-group"><input class="form-control download-anime-link" type="text" name="anime_download_link"/><label>link</label></div><div class="form-group"><input class="form-control download-anime-size" type="text" name="anime_download_size"/><label>Size</label></div><div class="form-group"><input class="form-control download-anime-kualitas" type="text" name="anime_download_quality"/><label>Quality</label></div><div class="form-group text-right"><button class="btn btn-danger delete-download">Delete</button> </div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
   $('#AnimeDownloadFile').append(dL_htmlDOM);
+  console.log(dL_htmlDOM);
   setTimeout(googleInputHasValue, 500 );
   deleteDL();
-  console.log(dL_htmlDOM);
+  
 }
 
 function addAnimeDownloadFile(){
-  $("#AnimeDownloadFile").on("click", function(){
+  $("#addAnimeDownload").on("click", function(){
     addAnimeDownloadFileAction();
   })
 }
 
+function addDownloadList(){
+  var url = "api/animes/downloadlist";
+  var anime_mal_id = $('[name="anime_mal_id"]').val();
+  var type = "POST";
+  var arr_dL_title = [];
+  var arr_dL_link = [];
+  var arr_dL_size = [];
+  var arr_dL_quality = [];
+  var emptyVal = false;
+  var succesAction = function(response) {
+    if(response.status === true){
+      openAlert({
+        alertType   : "Success",
+        alertTitle  : "Berhasil",
+      alertMessage  : "List Download Berhasil ditambah"
+      });
+      showDownloadListAction(anime_mal_id);
+    } else {
+      console.log(response);
+      openAlert({
+        alertType     : "danger",
+        alertTitle    : "Gagal",
+        alertMessage  : "Tidak bisa menambahkan DownloadList, Cek Console lu cok!"
+      });
+    }
+  }
+  var beforeSendAction = function() {
 
+  }
+  var errorAction = function(response){
+    console.log(response);
+    openAlert({
+      alertType     : "danger",
+      alertTitle    : "Gagal!!",
+      alertMessage  : "Tidak bisa menambahan playlist, cek console!"
+    });
+  }
+
+  $('.download-anime-title').each(function(){
+    var value = $(this).val();
+    if(value  ==  ""){
+      emptyVal  = true;
+    } else {
+      arr_dL_title.push(value);
+    }
+  });
+
+  $('.download-anime-link').each(function(){
+    var value = $(this).val();
+    if(value == ""){
+      emptyVal = true;
+    } else {
+      arr_dL_link.push(value);
+    }
+  });
+  
+  $('.download-anime-size').each(function(){
+    var value = $(this).val();
+    if(value == ""){
+      emptyVal = true;
+    } else {
+      arr_dL_size.push(value);
+    }
+  });
+    
+  $('.download-anime-kualitas').each(function(){
+    var value = $(this).val();
+    if(value == ""){
+      emptyVal = true;
+    } else {
+      arr_dL_quality.push(value)
+    }
+  });
+  
+  var dL_send_data = {
+    anime_mal_id  : $('[name="anime_mal_id"]').val(),
+      dL_send_data  : {
+       dL_title   :  arr_dL_title,
+       dL_link    :  arr_dL_link,
+       dL_size    :  arr_dL_size,
+       dL_quality :  arr_dL_quality
+    }
+  }
+
+   if(emptyVal == 1){
+     openAlert({
+       alertType    : "warning",
+       alertTitle   : "Warning!",
+       alertMessage : "Isi Semua Form DownloadList"
+     });
+   } else {
+     //ajaxSendJSON()
+     if($('[name="anime_mal_id"]').val() == ""){
+       openAlert  ({
+       alertType    : "warning",
+       alertTitle   : "Warning!",
+       alertMessage : "Isi juga Mal Idnya"
+      });
+     } else {
+       console.log(dL_send_data);
+       ajaxSendJSON(url, type, dL_send_data, beforeSendAction, succesAction, errorAction);
+     }
+   }
+  //SELESAI tutup
+}
+function animeSaveDownload(){
+  $("#saveDownloadAnime").on("click", function(){
+    addDownloadList();
+  });
+}
+//TASK
+//Buat show Download List [done]
+//Edit Download List [pending]
+
+function dwlPreviewAction(anime_title, title, url, mal_id, quality, sizex) {
+  $.fn.hasValue = function() {
+    if(this.val() != "") {
+      this.siblings("label").addClass("has-val");
+    }
+  }
+ 
+  var modal_title = anime_title + " : " +quality;
+  $('#modalDownloadTitle').text(modal_title);
+  $('#download_server').val(title).hasValue();
+  $('#download_link').val(url).hasValue();
+  $('#download_quality').val(quality).hasValue();
+  $('#download_size').val(sizex).hasValue();
+  $('#download_mal_id').val(mal_id);
+}
+
+function dwlPreview() {
+  //Kirim data ke modal
+  $('.Download-preview').on('click', function() {
+    var title = $(this).text();
+    var url = $(this).attr('data-url');
+    var anime_title = $('[name="anime_title"]').val();
+    var anime_download_id = $(this).attr('data-download-id');
+    var sizex = $(this).attr('data-size');
+    var quality = $(this).attr('data-kualitas');
+    var mal_id = $(this).attr('data-mal-id');
+    
+    $('#editDownload').attr('data-id', anime_download_id);
+    $('#deleteDL').attr('data-id', anime_download_id);
+    dwlPreviewAction(anime_title, title, url, mal_id, quality, sizex);
+  });
+  $('.modal-close').on('click', function(){
+    // $('#downloadBOX').html("<!--ISINYA DOWNLOAD BOX-->");
+  });
+  // console.log(dwlPreview);
+}
+function editDWLAction(anime_download_id){
+  var url = "api/animes/downloadlist";
+  var type = "PUT";
+  var data = {
+    anime_download_id : anime_download_id,
+    anime_mal_id : $('#download_mal_id').val(),
+    anime_download_quality : $('#download_quality').val(),
+    anime_download_name_server : $('#download_server').val(),
+    anime_download_link : $('#download_link').val(),
+    anime_download_size : $('#download_size').val(),
+  }
+
+  var successAction = function(response){
+    console.log(response)
+    if(response.status === true){
+      openAlert({
+        alertType : "success",
+        alertTitle : "Sukses!!",
+        alertMessage : "DownloadList berhasil diedit"
+      });
+      showDownloadListAction($('#download_mal_id').val());
+    } else {
+      // console.log(response);
+      openAlert({
+        alertType : "danger",
+        alertTitle : "Gagal!!",
+        alertMessage : "Tidak bisa mengedit, Cek konsol GOBLOK"
+      });
+    }
+  }
+  var beforeSendAction = function(){
+    console.log('Proses ngedit..')
+  }
+  var errorAction = function(response){
+    // console.log(response);
+    openAlert({
+      alertType : "danger",
+      alertTitle : "Gagal!!",
+      alertMessage : "Tidak bisa mengedit, Cek konsol"
+    });
+  }
+  console.log(data);
+  ajaxSendJSON(url, type, data, beforeSendAction, successAction, errorAction);
+}
+
+function editDownload() {
+  $('#editDownload').on('click', function(){
+    var anime_download_id = $(this).attr('data-id');
+    editDWLAction(anime_download_id);
+  });
+}
+
+function deleteDWLAction(anime_download_id){
+  var type = "DELETE";
+  var params = "anime_download_id";
+  var url = "api/animes/Download?"+params+"="+anime_download_id;
+  var successAction = function(response){
+    if(response.status === true){
+      openAlert({
+        alertType : "success",
+        alertTitle : "Sukses!!",
+        alertMessage : "Download list berhasil dihapus"
+      });
+      showDownloadListAction($('#download_mal_id').val());
+      $('#modalDownloadList').modal('hide');
+    } else {
+      console.log(response);
+      openAlert({
+        alertType : "danger",
+        alertTitle : "Gagal!!",
+        alertMessage : "Tidak bisa menghapus, Cek konsol"
+      });
+    }
+  }
+  var beforeSendAction = function(){
+    console.log("Loading untuk penghapusan..")
+  }
+  var errorAction = function(response){
+    console.log(response)
+    openAlert({
+      alertType : "danger",
+      alertTitle : "Gagal!!",
+      alertMessage : "Tidak bisa menghapus, Cek konsol"
+    });
+  }
+
+  ajaxSendJSON(url, type, {}, beforeSendAction, successAction, errorAction);
+}
+
+function deleteDWL(){
+  $("#deleteDL").on('click', function(){
+    var anime_download_id = $(this).attr('data-id');
+    deleteDWLAction(anime_download_id)
+  })
+}
 $(document).ready(function(){
 	grabber();
   AddAnime();
   resetForm();
   animeListShow();
+  deleteAnimelist();
   addAnimePlayListForm();
   deleteAPLB();
   animeAddPlayList();
@@ -751,8 +1125,14 @@ $(document).ready(function(){
   aplPreview();
   editAPL();
   deleteAPL();
-  //irva
-  addAnimeDownloadFileAction();
+
   addAnimeDownloadFile();
   deleteDL();
+  animeSaveDownload();
+  // showDownloadListAction();
+  dwlPreviewAction();
+  dwlPreview();
+  console.log(dwlPreview);
+  editDownload();
+  deleteDWL();
 });

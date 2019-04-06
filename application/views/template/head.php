@@ -11,8 +11,10 @@
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.css" />
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/datatables/Responsive-2.2.2/css/responsive.bootstrap4.css" />
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/plugins/datatables/RowReorder-1.2.4/css/rowReorder.bootstrap4.css" />
+	<link src="<?=base_url();?>assets/plugins/plyrio/css/plyr.css"/>
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato" />
 	<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/main.css" />
+	
 
 	<!-- script -->
 	<script type="text/javascript" src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>

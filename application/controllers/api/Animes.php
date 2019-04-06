@@ -212,7 +212,8 @@ class Animes extends REST_Controller {
           'anime_mal_id' => $mal_id,
           'anime_play_title' => $apl_data['apl_title'][$i],
           'anime_play_quality' => $apl_data['apl_quality'][$i],
-          'anime_play_link' => $apl_data['apl_link'][$i]
+          'anime_play_link' => $apl_data['apl_link'][$i],
+          'anime_thumb' => $apl_data['apl_thumb'][$i],
         ];
         $insertAPL = $this->AnimesModel->addAPL($apl);
         if($insertAPL <= 0){
@@ -244,12 +245,14 @@ class Animes extends REST_Controller {
     $anime_play_title = $this->put('anime_play_title');
     $anime_play_quality = $this->put('anime_play_quality');
     $anime_play_link = $this->put('anime_play_link');
+    $anime_thumb = $this->put('anime_thumb');
 
     $apl = [
       'anime_mal_id' => $anime_mal_id,
       'anime_play_title' => $anime_play_title,
       'anime_play_quality' => $anime_play_quality,
-      'anime_play_link' => $anime_play_link
+      'anime_play_link' => $anime_play_link,
+      'anime_thumb' => $anime_thumb
     ];
 
     $checkMAL = $this->AnimesModel->checkAnimeMalId($anime_mal_id);
@@ -324,7 +327,7 @@ class Animes extends REST_Controller {
 				"status" => false,
 				"pesan" => "NOT_FOUND",
 				"data" => $Download_get,
-		  	], REST_Controller::HTTP_OK);
+		  	], REST_Controller::HTTP_NOT_FOUND);
 		  }
 	  }
   }
@@ -356,23 +359,23 @@ class Animes extends REST_Controller {
 
   public function Download_post(){
     $mal_id = $this->post('anime_mal_id');
-    $dwnld_data = $this->post('dwnld_data');
+    $dL_send_data = $this->post('dL_send_data');
     
     $checkMAL = $this->AnimesModel->checkAnimeMalId($mal_id);
 
     if($checkMAL == 1){
-      $test =  count($dwnld_data['dwnld_title']);
+      $test =  count($dL_send_data['dL_title']);
       $countErr = 0;
 
-      for($i = 0; $i < count($dwnld_data['dwnld_link']); $i++){
+      for($i = 0; $i < count($dL_send_data['dL_title']); $i++){
         $dwnld = [
           'anime_mal_id' => $mal_id,
-          'anime_download_name_server' => $dwnld_data['dwnld_title'][$i],
-          'anime_download_link' => $dwnld_data['dwnld_link'][$i],
-          'anime_download_size' => $dwnld_data['dwnld_size'][$i],
-          'anime_download_quality' => $dwnld_data['dwnld_quality'][$i]
+          'anime_download_name_server' => $dL_send_data['dL_title'][$i],
+          'anime_download_link' => $dL_send_data['dL_link'][$i],
+          'anime_download_size' => $dL_send_data['dL_size'][$i],
+          'anime_download_quality' => $dL_send_data['dL_quality'][$i]
         ];
-        $insertAPL = $this->AnimesModel->addDownload($dwnld);
+        $insertDownload = $this->AnimesModel->addDownload($dwnld);
         if($insertDownload <= 0){
           $countErr++;
         }
@@ -405,7 +408,8 @@ class Animes extends REST_Controller {
     $anime_download_size = $this->put('anime_download_size');
     $anime_download_quality = $this->put('anime_download_quality');
 
-    $DL = [
+    $DWL = [
+      'anime_download_id' => $anime_download_id,
       'anime_mal_id' => $anime_mal_id,
       'anime_download_name_server'  => $anime_download_name_server,
       'anime_download_link' => $anime_download_link,
@@ -416,8 +420,7 @@ class Animes extends REST_Controller {
     $checkMAL = $this->AnimesModel->checkAnimeMalId($anime_mal_id);
 
     if($checkMAL == 1){
-      $editDwnld = $this->AnimesModel->editDwnld($anime_download_id, $DL);
-      
+      $editDwnld = $this->AnimesModel->editDwnld($anime_download_id, $DWL);
       if($editDwnld > 0){
         $this->response([
           'status' => true,

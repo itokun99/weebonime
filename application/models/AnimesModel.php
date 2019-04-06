@@ -67,14 +67,14 @@ class AnimesModel extends CI_Model {
     return $this->db->affected_rows();
   }
 
-  public function addDownload($download) {
-    $this->db->insert("anime_download", $download);
+  public function addDownload($dwnld) {
+    $this->db->insert("anime_download", $dwnld);
     return $this->db->affected_rows();
   }
 
   //PUT
-  public function editDwnld($anime_download_id, $DL){
-    $this->db->update("anime_download", $DL, ['anime_download_id' => $anime_download_id] );
+  public function editDwnld($anime_download_id, $DWL){
+    $this->db->update("anime_download", $DWL, ['anime_download_id' => $anime_download_id] );
     return $this->db->affected_rows();
   }
 

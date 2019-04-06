@@ -15,9 +15,11 @@ img {
 
 
 /* Sidear CSS */
+#site-sidebar, .bg-tabel{
+    background: #16a085;
+}
 #site-sidebar {
-	background: #34495e;
-	position: fixed;
+    position: fixed;
 	width: 100%;
 	max-width: 220px;
 	top: 0;
@@ -658,6 +660,50 @@ span.flat-alert-close {
 }
 .playListShow ul li a:hover {
     background : #eee;
+}
+
+/*Download List Show*/
+.DownloadListShow {
+    position: relative;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.DownloadListShow ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.DownloadListShow ul li {
+    margin-bottom: 10px;
+}
+
+.DownloadListShow ul li a {
+    display: inline-block;
+    width: 100%;
+    background: #f5f5f5;
+    padding: 8px 14px;
+    text-align: center;
+    color: #666;
+    font-weight: bold;
+    border-radius: 4px;
+    text-decoration : none;
+    transition : .3s;
+}
+.DownloadListShow ul li a:hover {
+    background : #eee;
+}
+/*DownloadBox*/
+.download-wrapper {
+    width: 100%;
+}
+
+.download-wrapper .download-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.download-wrapper .download-row .download-columns {
+    padding: 5px;
 }
 
 /*ADD NEW POST CUTOM CSS*/

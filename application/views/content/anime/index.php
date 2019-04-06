@@ -1,3 +1,46 @@
+<!--MODAL Download-->
+<div class="modal fade" id="modalDownloadList" tabindex="-1" role="dialog" aria-labelledby="modalDownloadList" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="modalDownloadTitle"></h5>
+            <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <!-- <div id="downloadBOX" class="downloadList-modal">
+            
+            </div> -->
+            <!-- <input type="hidden" id="anime_download_id"/> -->
+            <input type="hidden" id="download_mal_id"/>
+            <div id="downloadProperty">
+               <div class="form-group">
+                  <input type="text" id="download_server" class="form-control"/>
+                  <label class="has-val">Name Server</label>
+               </div>
+               <div class="form-group">
+                  <input type="text" id="download_link" class="form-control"/>
+                  <label class="has-val">Server LINK</label>
+               </div>
+               <div class="form-group">
+                  <input type="text" id="download_size" class="form-control"/>
+                  <label class="has-val">Size File</label>
+               </div>
+               <div class="form-group">
+                  <input type="text" id="download_quality" class="form-control"/>
+                  <label class="has-val">Quality</label>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
+            <button id="editDownload" type="button" class="btn btn-primary">Edit</button>
+            <button  id="deleteDL" type="button" class="btn btn-danger">Delete</button>
+         </div>
+      </div>
+   </div> 
+</div>
 <!-- breadcrumbs -->
 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
    <div class="breadcrumbs">
@@ -147,6 +190,10 @@
                            <input class="form-control play-anime-link" type="text" name="anime_play_link" />
                            <label>Player Link</label>
                         </div>
+                        <div class="form-group">
+                           <input class="form-control anime_thumb" type="text" name="anime_thumb" />
+                           <label>Thumbnail</label>
+                        </div>
                         <div class="form-group text-right">
                            <button class="btn btn-danger delete-play">Delete</button>
                         </div>
@@ -162,17 +209,17 @@
                </div>
             </div>
          </div>
-		 		 <!--DOWNLOAD BATCH-->
-				  <div class="flat-card mb-4">
-            <div class="flat-card-header" data-toggle="collapse" data-target="#animeDlwnListBody">
-               <h4 class="flat-card-title">Add Download Batch</h4>
+		 	<!--DOWNLOAD BATCH-->
+         <div class="flat-card mb-4">
+            <div class="flat-card-header" data-toggle="collapse" data-target="#animeDownloadBody">
+               <h4 class="flat-card-title">add DownloadList</h4>
             </div>
-            <div id="animeDlwnListBody" class="collapse show">
-               <div class="flat-card-body"  style="max-height:300px; overflow-y:auto">
+            <div id="animeDownloadBody" class="collapse">
+               <div class="flat-card-body" style="max-height:300px; overflow-y:auto">
                   <div id="AnimeDownloadFile">
                      <div class="dL-block">
-					 <div class="form-group">
-                           <input class="form-control download-anime-title" type="text" name="anime_download_name_server" />
+                        <div class="form-group">
+                           <input class="form-control download-anime-title" type="text" name="anime_download_name_server"/>
                            <label>Name Server</label>
                         </div>
                         <div class="form-group">
@@ -185,29 +232,25 @@
                         </div>
                         <div class="form-group">
                            <input class="form-control download-anime-kualitas" type="text" name="anime_download_quality" />
-                           <label>Quality</label>
+                           <label>Resolusi</label>
                         </div>
-                        <div class="form-group text-right">
-                           <button class="btn btn-danger delete-download">Delete</button>
-                        </div>
-                        <div style="border-bottom:2px dashed #bbb;" class="mb-4"></div>
                      </div>
                   </div>
                </div>
                <div class="flat-card-footer">
                   <div class="text-right">
                      <button class="btn btn-primary" id="addAnimeDownload">Add</button>
-                     <button class="btn btn-primary" id="saveAnimeDownload">Save</button>
+                     <button class="btn btn-primary" id="saveDownloadAnime">Save</button>
                   </div>
                </div>
             </div>
          </div>
-		 <!--Download-->
+         <!--END Download-->
          <div class="flat-card mb-4">
             <div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody0">
                <h4 class="flat-card-title">Playlist Quality</h4>
             </div>
-            <div id="PlayListBody0" class="collapse show">
+            <div id="PlayListBody0" class="collapse">
                <div class="flat-card-body">
                   <div class="flat-card mb-4">
                      <div class="flat-card-header" data-toggle="collapse" data-target="#PlayListBody1">
@@ -256,6 +299,60 @@
                </div>
             </div>
          </div>
+
+         <div class="flat-card mb-4">
+    <div class="flat-card-header" data-toggle="collapse" data-target="#DLBody0">
+        <h4 class="flat-card-title">Download LIST Quality</h4>
+    </div>
+    <div id="DLBody0" class="collapse">
+        <div class="flat-card-body">
+            <div class="flat-card mb-4">
+                <div class="flat-card-header" data-toggle="collapse" data-target="#DLBody01">
+                    <h4 class="flat-card-title">360p</h4>
+                </div>
+                <div id="DLBody01" class="collapse show">
+                    <div class="flat-card-body">
+                        <div class="DownloadListShow" id="DownloadListShow1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flat-card mb-4">
+                <div class="flat-card-header" data-toggle="collapse" data-target="#DLBody02">
+                    <h4 class="flat-card-title">480p</h4>
+                </div>
+                <div id="DLBody02" class="collapse show">
+                    <div class="flat-card-body">
+                        <div class="DownloadListShow" id="DownloadListShow2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flat-card mb-4">
+                <div class="flat-card-header" data-toggle="collapse" data-target="#DLBody03">
+                    <h4 class="flat-card-title">720p</h4>
+                </div>
+                <div id="DLBody03" class="collapse show">
+                    <div class="flat-card-body">
+                        <div class="DownloadListShow" id="DownloadListShow3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flat-card mb-4">
+                <div class="flat-card-header" data-toggle="collapse" data-target="#DLBody04">
+                    <h4 class="flat-card-title">1080p</h4>
+                </div>
+                <div id="DLBody04" class="collapse show">
+                    <div class="flat-card-body">
+                        <div class="DownloadListShow" id="DownloadListShow4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
       </div>
       <div class="col-12 col-sm-12 col-md-12 col-lg-12">
          <div class="flat-card">
@@ -284,7 +381,7 @@
          </div>
          <div class="modal-body">
             <div class="playlist-modal">
-               <div id="playlist-video" class="playlist-video embed-responsive embed-responsive-16by9 mb-4">
+               <div id="playlist-video" class="mb-4" data-class="playlist-video embed-responsive embed-responsive-16by9 mb-4">
                   <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
                </div>
                <input type="hidden" id="play_mal_id" />
@@ -301,6 +398,10 @@
                      <input type="text" id="play_link" class="form-control" />
                      <label>URL</label>
                   </div>
+                  <div class="form-group">
+                     <input type="text" id="anime_thumb" class="form-control" />
+                     <label>thumbnail</label>
+                  </div>
                </div>
             </div>
          </div>
@@ -308,7 +409,7 @@
             <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
             <button id="editAPL" type="button" class="btn btn-primary">Edit</button>
             <button id="deleteAPL" type="button" class="btn btn-danger">Delete</button>				
-         </div>
+         </div>   
       </div>
    </div>
 </div>
@@ -320,4 +421,8 @@
    
    });
 </script>
+<?php include "plyr.php" ;?>
+<script src="<?=base_url();?>assets/plugins/plyrio/js/plyr.js"></script>
+
+<!-- <script>const players = Array.from(document.querySelectorAll('.js-player')).map(player => new Plyr(player));</script> -->
 <script src="assets/js/anime-list.js"></script>
