@@ -35,8 +35,8 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
-            <button id="editDownload" type="button" class="btn btn-primary">Edit</button>
-            <button  id="deleteDL" type="button" class="btn btn-danger">Delete</button>
+            <button id="editDownload" type="button" class="btn btn-pertama">Edit</button>
+            <button  id="deleteDL" type="button" class="btn btn-bahaya">Delete</button>
          </div>
       </div>
    </div> 
@@ -71,7 +71,7 @@
                      </div>
                      <div class="col-12 col-sm-12 col-md-4 col-lg-4">
                         <div class="form-group">
-                           <input id="generate_mal" type="button" class="btn btn-block btn-primary" value="Generate" />
+                           <input id="generate_mal" type="button" class="btn btn-block btn-pertama" value="Generate" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-12 col-md-8 col-lg-8">
@@ -161,9 +161,9 @@
             </div>
             <div class="flat-card-footer">
                <div class="w-100">
-                  <button type="button" class="btn btn-primary" id="addAnime">Add</button>
-                  <button type="button" class="btn btn-primary d-none" id="editAnime">Edit</button>
-                  <button type="button" class="btn btn-danger" id="resetAnime">Reset</button>
+                  <button type="button" class="btn btn-pertama" id="addAnime">Add</button>
+                  <button type="button" class="btn btn-pertama d-none" id="editAnime">Edit</button>
+                  <button type="button" class="btn btn-bahaya" id="resetAnime">Reset</button>
                </div>
             </div>
          </div>
@@ -203,8 +203,8 @@
                </div>
                <div class="flat-card-footer">
                   <div class="text-right">
-                     <button class="btn btn-primary" id="addAnimePlayList">Add</button>
-                     <button class="btn btn-primary" id="saveAnimePlayList">Save</button>
+                     <button class="btn btn-pertama" id="addAnimePlayList">Add</button>
+                     <button class="btn btn-pertama" id="saveAnimePlayList">Save</button>
                   </div>
                </div>
             </div>
@@ -239,8 +239,8 @@
                </div>
                <div class="flat-card-footer">
                   <div class="text-right">
-                     <button class="btn btn-primary" id="addAnimeDownload">Add</button>
-                     <button class="btn btn-primary" id="saveDownloadAnime">Save</button>
+                     <button class="btn btn-pertama" id="addAnimeDownload">Add</button>
+                     <button class="btn btn-pertama" id="saveDownloadAnime">Save</button>
                   </div>
                </div>
             </div>
@@ -407,8 +407,8 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
-            <button id="editAPL" type="button" class="btn btn-primary">Edit</button>
-            <button id="deleteAPL" type="button" class="btn btn-danger">Delete</button>				
+            <button id="editAPL" type="button" class="btn btn-pertama">Edit</button>
+            <button id="deleteAPL" type="button" class="btn btn-bahaya">Delete</button>				
          </div>   
       </div>
    </div>

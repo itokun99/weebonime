@@ -5,7 +5,7 @@ a {
 	transition:.3s all;
 }
 body {
-	background-color: #eee;
+	background-color: #fff;
 	font-family: 'Lato', sans-serif;
 }
 img {
@@ -16,7 +16,7 @@ img {
 
 /* Sidear CSS */
 #site-sidebar, .bg-tabel{
-    background: #16a085;
+    background: #fff;
 }
 #site-sidebar {
     position: fixed;
@@ -26,7 +26,7 @@ img {
 	left: 0;
 	bottom: 0;
 	transition : .3s;
-	box-shadow: 1px 0px 1px rgba(0,0,0,0.3);
+	border-right: 0.5px solid rgba(0,0,0,0.1);
 }
 #site-sidebar.full {
 	max-width: 60px;
@@ -50,7 +50,7 @@ img {
 	display: inline-block;
 	text-decoration: none !important;
 	width: 100%;
-	color: #fff;
+	color: #777;
 }
 
 
@@ -146,7 +146,7 @@ img {
     z-index: 99;
     height: 60px;
     background: #fff;
-    box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+    border-bottom: 0.5px solid rgba(0,0,0,0.1);
     right: 0;
     width: calc(100% - 220px);
     transition: .3s;
@@ -157,7 +157,7 @@ img {
 /* Menu toggle */
 .menu-toggle {
     position: absolute;
-    background: rgba(0,0,0,0.1);
+    /* background: rgba(0,0,0,0.1); */
     height: 40px;
     width: 40px;
     top: 10px;
@@ -166,10 +166,10 @@ img {
 }
 .menu-toggle span {
     position: absolute;
-    background: #666;
+    background: #777;
     top: 50%;
     left: 50%;
-    height: 3px;
+    height: 2px;
     width: 50%;
     border-radius: 10px;
     transform: translate(-50%,-50%);
@@ -304,11 +304,34 @@ img {
     box-shadow: -1px -1px 2px rgba(0,0,0,0.1);
     z-index: -1;
 }
+/*Button CSS*/
+.btn-pertama {
+    color: #777;
+    background-color: #007bff00;
+    border-color: #0b69f745;
+}
+.btn-pertama:hover {
+    background: #0b69f75e;
+    color: #fff;
+    /* border : none; */
+}
+.btn-bahaya {
+    color: #777;
+    background-color: #dc354500;
+    border-color: #dc354538;
+}
+.btn-bahaya:hover {
+    background-color: #dc35455e;
+    color: #fff;
+    /* border: none; */
+}
+
 /* Flat Card */
 .flat-card {
-		position: relative;
+	position: relative;
     background: #fff;
-    box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+    /* box-shadow: 0 2px 2px rgba(0,0,0,0.2); */
+    border: 0.5px solid rgba(0,0,0,0.1);
 }
 .flat-card-header {
 		position: relative;

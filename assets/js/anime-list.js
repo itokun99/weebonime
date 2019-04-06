@@ -230,7 +230,8 @@ function animelistDeleteAction(anime_id) {
 }
  
  function deleteAnimelist(){
- 	$("#dlAnimelist").on('click', function(){
+ 	$(".dlAnimelist").on('click', function(){
+     console.log("clik")
      var anime_id = $(this).attr("data-id");
      var a = confirm("Yakin Dihapus ?");
      if( a === true) {
@@ -273,7 +274,7 @@ function animeListShowAction(){
           htmlDOM += "<td>"+data[i].anime_score+"</td>";
           htmlDOM += "<td>"+data[i].anime_genre+"</td>";
           htmlDOM += "<td>"+data[i].anime_episode+"</td>";
-          htmlDOM += "<td><button type='button' id='dlAnimelist' class='btn btn-danger' data-id='"+data[i].anime_id+"'>Delete</button></td>";
+          htmlDOM += "<td><button type='button' class='dlAnimelist btn btn-bahaya' data-id='"+data[i].anime_id+"'>X</button></td>";
           htmlDOM += "</tr>";
           j++
         }
@@ -318,7 +319,7 @@ function deleteAPLB(){
 }
 
 function addAnimePlayListFormAction(){
-  var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-quality" type="text" name="anime_play_quality" /><label>Quality</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group"><input class="form-control anime_thumb" type="text" name="anime_thumb" /><label>Thumbnail</label></div><div class="form-group text-right"><button class="btn btn-danger delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
+  var aplf_htmlDOM = '<div class="aplf-block"><div class="form-group"><input class="form-control play-anime-title" type="text" name="anime_play_title" /><label>Eps Title</label></div><div class="form-group"><input class="form-control play-anime-quality" type="text" name="anime_play_quality" /><label>Quality</label></div><div class="form-group"><input class="form-control play-anime-link" type="text" name="anime_play_link" /><label>Player Link</label></div><div class="form-group"><input class="form-control anime_thumb" type="text" name="anime_thumb" /><label>Thumbnail</label></div><div class="form-group text-right"><button class="btn btn-bahaya delete-play">Delete</button></div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
   $('#animePlayListForm').append(aplf_htmlDOM);
   setTimeout(googleInputHasValue, 500 );
   deleteAPLB();
@@ -924,7 +925,7 @@ function deleteDL(){
 }
 
 function addAnimeDownloadFileAction(){
-  var dL_htmlDOM = '<div class="dL-block"><div class="form-group"><input class="form-control download-anime-title" type="text" name="anime_download_name_server"/><label>Name Server</label></div><div class="form-group"><input class="form-control download-anime-link" type="text" name="anime_download_link"/><label>link</label></div><div class="form-group"><input class="form-control download-anime-size" type="text" name="anime_download_size"/><label>Size</label></div><div class="form-group"><input class="form-control download-anime-kualitas" type="text" name="anime_download_quality"/><label>Quality</label></div><div class="form-group text-right"><button class="btn btn-danger delete-download">Delete</button> </div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
+  var dL_htmlDOM = '<div class="dL-block"><div class="form-group"><input class="form-control download-anime-title" type="text" name="anime_download_name_server"/><label>Name Server</label></div><div class="form-group"><input class="form-control download-anime-link" type="text" name="anime_download_link"/><label>link</label></div><div class="form-group"><input class="form-control download-anime-size" type="text" name="anime_download_size"/><label>Size</label></div><div class="form-group"><input class="form-control download-anime-kualitas" type="text" name="anime_download_quality"/><label>Quality</label></div><div class="form-group text-right"><button class="btn btn-bahaya delete-download">Delete</button> </div><div style="border-bottom:2px dashed #bbb;" class="mb-4"></div></div>'
   $('#AnimeDownloadFile').append(dL_htmlDOM);
   console.log(dL_htmlDOM);
   setTimeout(googleInputHasValue, 500 );
