@@ -50,10 +50,14 @@ class AnimesModel extends CI_Model {
   public function checkAvailableAnimeOnPlayList($anime_mal_id){
     $apl = $this->db->get_where('anime_playlist',['anime_mal_id' => $anime_mal_id])->num_rows();
   }
-  public function getAPL($anime_mal_id, $quality){
+  public function getAPL($anime_mal_id = NULL, $quality = NULL){
       $this->db->order_by("published", "DESC");
-      $apl = $this->db->get_where('anime_playlist', ['anime_mal_id' => $anime_mal_id, 'anime_play_quality' => $quality])->result_array();
-      return $apl;
+      if($quality === NULL || $quality == "") {
+        $apl = $this->db->get_where('anime_playlist', ['anime_mal_id' => $anime_mal_id])->result_array();  
+      } else {
+        $apl = $this->db->get_where('anime_playlist', ['anime_mal_id' => $anime_mal_id, 'anime_play_quality' => $quality])->result_array();
+      }
+      return $apl;  
   }
   public function addAPL($apl) {
     $this->db->insert("anime_playlist", $apl);

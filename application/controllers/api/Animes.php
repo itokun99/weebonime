@@ -177,12 +177,13 @@ class Animes extends REST_Controller {
   public function APL_get(){
     $mal_id = $this->get('anime_mal_id');
     $quality = $this->get('anime_play_quality');
-    
-    if($mal_id === NULL || $quality == "" || $quality === NULL ){
+    if($mal_id === NULL){
       $this->response([
         "status" => false,
         "pesan" => "Membutuhkan 1 MAL ID",
       ], REST_Controller::HTTP_BAD_REQUEST);
+    }else if($quality === NULL || $quality == ""){
+      $get_apl = $this->AnimesModel->getAPL($mal_id, NULL);
     } else {
       $get_apl = $this->AnimesModel->getAPL($mal_id, $quality);
     }

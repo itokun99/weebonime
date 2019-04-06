@@ -231,8 +231,14 @@ function animelistDeleteAction(anime_id) {
  
  function deleteAnimelist(){
  	$("#dlAnimelist").on('click', function(){
- 		var anime_id = $(this).attr("data-id");
- 		animelistDeleteAction(anime_id);
+     var anime_id = $(this).attr("data-id");
+     var a = confirm("Yakin Dihapus ?");
+     if( a === true) {
+      animelistDeleteAction(anime_id);
+     } else {
+       return false;
+     }
+ 		
  	})
  }
 
@@ -267,7 +273,7 @@ function animeListShowAction(){
           htmlDOM += "<td>"+data[i].anime_score+"</td>";
           htmlDOM += "<td>"+data[i].anime_genre+"</td>";
           htmlDOM += "<td>"+data[i].anime_episode+"</td>";
-          htmlDOM += "<td><button type='button' id='dlAnimelist' class='btn btn-danger'>Delete</button></td>";
+          htmlDOM += "<td><button type='button' id='dlAnimelist' class='btn btn-danger' data-id='"+data[i].anime_id+"'>Delete</button></td>";
           htmlDOM += "</tr>";
           j++
         }
@@ -279,6 +285,7 @@ function animeListShowAction(){
          "info":     false
      })
      setTimeout(selectAnime(), 500)
+     deleteAnimelist();
     } else {
       openAlert({
         alertType : "error",
@@ -597,34 +604,101 @@ function showPlayListAction(anime_mal_id){
   var type = "GET";
   var url = "api/animes/APL?"+param+"="+anime_mal_id;
   var successAction = function(response){
+    // console.log("result anime list: ",response)
     if(response.status === true){
-      console.log(response);
       var html = "";
       var dataAPL = response.data;
       var j = 1;
+      var arr_360 = [];
+      var arr_480 = [];
+      var arr_720 = [];
+      var arr_1080 = [];
+      
+      console.log("total list", dataAPL);
+      
 
-      html += "<ul>";
+      // html += "<ul>";
      
       for(var i = 0; i < dataAPL.length; i++){
-        html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+dataAPL[i].anime_mal_id+"' data-play-id='"+dataAPL[i].play_id+"' data-pub='"+dataAPL[i].published+"' data-thumb='"+dataAPL[i].anime_thumb+"' data-url='"+dataAPL[i].anime_play_link+"' data-quality='"+dataAPL[i].anime_play_quality+"'>"+dataAPL[i].anime_play_title+"</a></li>";
+        // console.log("testtsd",dataAPL[i].anime_play_quality);
+        if(dataAPL[i].anime_play_quality == "1"){
+          arr_360.push(dataAPL[i])
+        }
+        if(dataAPL[i].anime_play_quality == "2"){
+          arr_480.push(dataAPL[i]);
+        }
+        if(dataAPL[i].anime_play_quality == "3"){
+          arr_720.push(dataAPL[i])          
+        }
+        if(dataAPL[i].anime_play_quality == "4"){
+          arr_1080.push(dataAPL[i]);
+        }
       }
-      html += "</ul>";
       
-      for(var i = 0; i < dataAPL.length; i++){
-        var quality = dataAPL[i].anime_play_quality;
-        if( quality == 1){
-          $("#playListShow1").html(html);
+      // console.log("test kuality 1:", arr_360);
+      // console.log("test kuality 2:", arr_480);
+      // console.log("test kuality 3:", arr_720);
+      // console.log("test kuality 4:", arr_1080);
+      // console.log(arr_360);
+      
+      
+      
+      var nothing = "<div class='text-center'><span>Tidak ada playlist</span></div>";
+      
+      if(arr_360.length > 0){
+        html += "<ul>";
+        for(var i = 0; i < arr_360.length; i++){
+          html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+arr_360[i].anime_mal_id+"' data-play-id='"+arr_360[i].play_id+"' data-pub='"+arr_360[i].published+"' data-thumb='"+arr_360[i].anime_thumb+"' data-url='"+arr_360[i].anime_play_link+"' data-quality='"+arr_360[i].anime_play_quality+"'>"+arr_360[i].anime_play_title+"</a></li>";      
         }
-        if( quality == 2){
-          $("#playListShow2").html(html);
-        }
-        if( quality == 3){
-          $("#playListShow3").html(html);
-        }
-        if( quality == 4){
-          $("#playListShow4").html(html);          
-        }
+        html += "</ul>";
+        $("#playListShow1").html(html);
+      } else {
+        $("#playListShow1").html(nothing);
       }
+      
+      html = "";
+      
+      if(arr_480.length > 0){
+        html += "<ul>";
+        for(var i = 0; i < arr_480.length; i++){
+          html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+arr_480[i].anime_mal_id+"' data-play-id='"+arr_480[i].play_id+"' data-pub='"+arr_480[i].published+"' data-thumb='"+arr_480[i].anime_thumb+"' data-url='"+arr_480[i].anime_play_link+"' data-quality='"+arr_480[i].anime_play_quality+"'>"+arr_480[i].anime_play_title+"</a></li>";      
+        }
+        html += "</ul>";
+        $("#playListShow2").html(html);
+      } else {
+        $("#playListShow2").html(nothing);
+      }
+      
+      html = "";
+      
+      
+      if(arr_720.length > 0){
+        html += "<ul>";
+        for(var i = 0; i < arr_720.length; i++){
+          html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+arr_720[i].anime_mal_id+"' data-play-id='"+arr_720[i].play_id+"' data-pub='"+arr_720[i].published+"' data-thumb='"+arr_720[i].anime_thumb+"' data-url='"+arr_720[i].anime_play_link+"' data-quality='"+arr_720[i].anime_play_quality+"'>"+arr_720[i].anime_play_title+"</a></li>";      
+        }
+        html += "</ul>";
+        $("#playListShow3").html(html);
+      } else {
+        $("#playListShow3").html(nothing);
+      }
+      
+      html = "";
+      
+      if(arr_1080.length > 0){
+        html += "<ul>";
+        for(var i = 0; i < arr_1080.length; i++){
+          html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+arr_1080[i].anime_mal_id+"' data-play-id='"+arr_1080[i].play_id+"' data-pub='"+arr_1080[i].published+"' data-thumb='"+arr_1080[i].anime_thumb+"' data-url='"+arr_1080[i].anime_play_link+"' data-quality='"+arr_1080[i].anime_play_quality+"'>"+arr_1080[i].anime_play_title+"</a></li>";      
+        }
+        html += "</ul>";
+        $("#playListShow4").html(html);
+      } else {
+        $("#playListShow4").html(nothing);
+      }
+      
+      html = "";
+      
+      // html += "<li><a class='apl-preview' data-toggle='modal' data-target='#modalPlayList' href='javascript:void(0)' data-mal-id='"+dataAPL[i].anime_mal_id+"' data-play-id='"+dataAPL[i].play_id+"' data-pub='"+dataAPL[i].published+"' data-thumb='"+dataAPL[i].anime_thumb+"' data-
       setTimeout(aplPreview(), 500);
     }
     else {
@@ -640,10 +714,7 @@ function showPlayListAction(anime_mal_id){
     $("#playListShow").html("<div class='text-center'><span>Tidak ada playlist</span></div>");
   }
 
-  ajaxSendJSON(url+"&anime_play_quality=1", type, {}, beforeSendAction, successAction, errorAction);
-  ajaxSendJSON(url+"&anime_play_quality=2", type, {}, beforeSendAction, successAction, errorAction);
-  ajaxSendJSON(url+"&anime_play_quality=3", type, {}, beforeSendAction, successAction, errorAction);
-  ajaxSendJSON(url+"&anime_play_quality=4", type, {}, beforeSendAction, successAction, errorAction);
+  ajaxSendJSON(url, type, {}, beforeSendAction, successAction, errorAction);
 
 }
 
@@ -1133,7 +1204,7 @@ $(document).ready(function(){
   // showDownloadListAction();
   dwlPreviewAction();
   dwlPreview();
-  console.log(dwlPreview);
+  // console.log(dwlPreview);
   editDownload();
   deleteDWL();
 });
