@@ -2,18 +2,46 @@
 
 class AnimesModel extends CI_Model {
 
-  public function getAnimes($anime_id = NULL, $anime_mal_id = NULL, $order_by = NULL){
-    if($order_by !== NULL){
-      $this->db->order_by($order_by, "asc");
-    }
-    if($anime_id === NULL && $anime_mal_id === NULL){
-      return $this->db->get('animes')->result_array();
-    } else if($anime_id === NULL || $anime_id === "") {
-      return $this->db->get_where('animes', ["anime_mal_id" => $anime_mal_id])->result_array();
-    } else if($anime_mal_id === NULL || $anime_mal_id === ""){
-      return $this->db->get_where('animes', ["anime_id" => $anime_id])->result_array();      
+  public function getAnimes($anime_id = NULL, $anime_mal_id = NULL, $order_by = NULL, $listed = NULL, $genre = NULL){
+    
+    if($order_by === NULL && $listed === NULL){
+      $this->db->order_by('anime_id','asc');      
+    } else if($order_by !== NULL && $listed === NULL){
+      $this->db->order_by($order_by,'asc');            
+    } else if($order_by === NULL && $listed !== NULL){
+      $this->db->order_by('anime_id',$listed);                  
     } else {
-      return $this->db->get_where('animes', ["anime_id" => $anime_id, "anime_mal_id" => $anime_mal_id])->result_array();         
+      $this->db->order_by($order_by,$listed);
+    }
+    
+    if($anime_id === NULL && $anime_mal_id === NULL){
+      if($genre === NULL){
+        return $this->db->get('animes')->result_array();
+      } else {
+        $this->db->like('anime_genre', $genre);
+        return $this->db->get('animes')->result_array();        
+      }
+    } else if($anime_id === NULL || $anime_id === "") {
+      if($genre === NULL){
+        return $this->db->get_where('animes', ["anime_mal_id" => $anime_mal_id])->result_array(); 
+      } else {
+        $this->db->like('anime_genre', $genre);
+        return $this->db->get_where('animes', ["anime_mal_id" => $anime_mal_id])->result_array();
+      }
+    } else if($anime_mal_id === NULL || $anime_mal_id === ""){
+      if($genre === NULL){
+        return $this->db->get_where('animes', ["anime_id" => $anime_id])->result_array();              
+      } else {
+        $this->db->like('anime_genre', $genre);        
+        return $this->db->get_where('animes', ["anime_id" => $anime_id])->result_array();      
+      }
+    } else {
+      if($genre === NULL){
+        return $this->db->get_where('animes', ["anime_id" => $anime_id, "anime_mal_id" => $anime_mal_id])->result_array();
+      } else {
+        $this->db->like('anime_genre', $genre);        
+        return $this->db->get_where('animes', ["anime_id" => $anime_id, "anime_mal_id" => $anime_mal_id])->result_array();        
+      }
     }
   }
   
@@ -40,8 +68,14 @@ class AnimesModel extends CI_Model {
     return $this->db->affected_rows();
   }
 
-  public function updateAnimes($anime_data, $anime_id){
-    $this->db->update("animes", $anime_data, ["anime_id" => $anime_id]);
+  public function updateAnimes($anime_data, $anime_id = NULL, $anime_mal_id = NULL){
+    if($anime_id === NULL || $anime_id == ""){
+      $this->db->update("animes", $anime_data, ["anime_mal_id" => $anime_mal_id]); 
+    } else if($anime_mal_id === NULL || $anime_mal_id == ""){
+      $this->db->update("animes", $anime_data, ["anime_id" => $anime_id]);
+    } else {
+      $this->db->update("animes", $anime_data, ["anime_id" => $anime_id, "anime_mal_id" => $anime_mal_id]);      
+    }
     return $this->db->affected_rows();
   }
   public function checkAnimeMalId($anime_mal_id){

@@ -12,6 +12,7 @@ class Animes extends REST_Controller {
 
   //load model disini
   public function __construct(){
+    date_default_timezone_set("Asia/Bangkok");
     parent::__construct();
     // header('Access-Control-Allow-Origin: *');
     // header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
@@ -25,11 +26,13 @@ class Animes extends REST_Controller {
     $anime_id = $this->get('anime_id');
     $anime_mal_id = $this->get('anime_mal_id');
     $order_by = $this->get('order_by');
+    $listed = $this->get('listed');
+    $genre = $this->get('genre');
 
     if($anime_id === NULL && $anime_mal_id === NULL) {
-      $animes = $this->AnimesModel->getAnimes(NULL, NULL, $order_by);
+      $animes = $this->AnimesModel->getAnimes(NULL, NULL, $order_by, $listed, $genre);
     } else {
-      $animes = $this->AnimesModel->getAnimes($anime_id, $anime_mal_id, $order_by);
+      $animes = $this->AnimesModel->getAnimes($anime_id, $anime_mal_id, $order_by, $listed, $genre);
     }
     if($animes) {
       for($i = 0; $i < count($animes); $i++){
@@ -157,8 +160,10 @@ class Animes extends REST_Controller {
       "anime_trailer" => $this->put("anime_trailer"),
       "anime_sinopsis" => $this->put("anime_sinopsis"),
     ];
+    
+    $update = $this->AnimesModel->updateAnimes($anime_data, $anime_id);
 
-    if($this->AnimesModel->updateAnimes($anime_data, $anime_id) > 0) {
+    if($update > 0) {
       $anime_title = $this->put("anime_title");
       $pesan = "Data anime ".$anime_title." telah berhasil diedit";
       $this->response([
@@ -211,13 +216,8 @@ class Animes extends REST_Controller {
     if($checkMAL == 1){
       $test =  count($apl_data['apl_title']);
       $countErr = 0;
-
-      //$apl_data['apl_quality'] / Quality type
-      // 1 == 360p
-      // 2 == 480p
-      // 3 == 720p
-      // 4 == 1080p
       for($i = 0; $i < count($apl_data['apl_title']); $i++){
+        $updateDate = date('Y-m-d H:i:s');
         $apl = [
           'anime_mal_id' => $mal_id,
           'anime_play_title' => $apl_data['apl_title'][$i],
@@ -225,12 +225,17 @@ class Animes extends REST_Controller {
           'anime_play_link' => $apl_data['apl_link'][$i],
           'anime_thumb' => $apl_data['apl_thumb'][$i],
         ];
+        
+        $anime_data = [
+          'date_update' => $updateDate,
+        ];
         $insertAPL = $this->AnimesModel->addAPL($apl);
         if($insertAPL <= 0){
           $countErr++;
         }
       }
       if($countErr == 0) {
+        $dateUpdated = $this->AnimesModel->updateAnimes($anime_data, NULL, $mal_id);
         $this->response([
           "status" => true,
           "pesan" => "Semua Playlist berhasil ditambahkan",
