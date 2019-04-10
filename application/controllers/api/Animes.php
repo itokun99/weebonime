@@ -28,12 +28,16 @@ class Animes extends REST_Controller {
     $order_by = $this->get('order_by');
     $listed = $this->get('listed');
     $genre = $this->get('genre');
+    $limit = $this->get('limit');
+    $limit_offset = $this->get('limit_offset');
+
 
     if($anime_id === NULL && $anime_mal_id === NULL) {
-      $animes = $this->AnimesModel->getAnimes(NULL, NULL, $order_by, $listed, $genre);
+      $animes = $this->AnimesModel->getAnimes(NULL, NULL, $order_by, $listed, $genre, $limit, $limit_offset);
     } else {
-      $animes = $this->AnimesModel->getAnimes($anime_id, $anime_mal_id, $order_by, $listed, $genre);
+      $animes = $this->AnimesModel->getAnimes($anime_id, $anime_mal_id, $order_by, $listed, $genre, $limit, $limit_offset);
     }
+    
     if($animes) {
       for($i = 0; $i < count($animes); $i++){
         $animes[$i]["anime_play_data"] = [];
@@ -61,6 +65,7 @@ class Animes extends REST_Controller {
       // print_r($animes);
       $this->response([
         "status" => true,
+        "statusCode" => 200,
         "pesan" => "Data sukses",
         "data" => $animes,
       ], REST_Controller::HTTP_OK);
@@ -68,6 +73,7 @@ class Animes extends REST_Controller {
       $this->response([
         "status" => false,
         "pesan" => "Tidak ada di Database",
+        "statusCode" => 404
       ], REST_Controller::HTTP_NOT_FOUND);
     }
   }

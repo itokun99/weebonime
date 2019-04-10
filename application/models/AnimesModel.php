@@ -2,7 +2,7 @@
 
 class AnimesModel extends CI_Model {
 
-  public function getAnimes($anime_id = NULL, $anime_mal_id = NULL, $order_by = NULL, $listed = NULL, $genre = NULL){
+  public function getAnimes($anime_id = NULL, $anime_mal_id = NULL, $order_by = NULL, $listed = NULL, $genre = NULL, $limit = NULL, $limit_offset = NULL){
     
     if($order_by === NULL && $listed === NULL){
       $this->db->order_by('anime_id','asc');      
@@ -12,6 +12,14 @@ class AnimesModel extends CI_Model {
       $this->db->order_by('anime_id',$listed);                  
     } else {
       $this->db->order_by($order_by,$listed);
+    }
+
+    if($limit !== NULL && $limit_offset !== NULL){
+      $this->db->limit($limit, $limit_offset);
+    } else if($limit !== NULL && $limit_offset === NULL ){
+      $this->db->limit($limit);
+    } else if($limit === NULL && $limit_offset !== NULL) {
+      $this->db->limit(99999 , $limit_offset);
     }
     
     if($anime_id === NULL && $anime_mal_id === NULL){
