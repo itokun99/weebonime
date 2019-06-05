@@ -2,6 +2,17 @@
 
 class AnimesModel extends CI_Model {
 
+  public function getAnimesMiniList($id = NULL){
+      $this->db->select('anime_id, anime_mal_id, anime_title');
+      $this->db->from('animes');
+      $this->db->order_by('anime_title', 'asc');
+      if($id !== NULL){
+        $this->db->where('anime_id', $id);
+      }
+      $anime = $this->db->get();
+      return $anime->result_array();
+  }
+
   public function getAnimes($anime_id = NULL, $anime_mal_id = NULL, $order_by = NULL, $listed = NULL, $genre = NULL, $limit = NULL, $limit_offset = NULL){
     
     if($order_by === NULL && $listed === NULL){

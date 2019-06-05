@@ -1,29 +1,34 @@
 <?php 
 class UserModel extends CI_Model {
-
-  public function getUser($user_id = null){
-    if($user_id === null){
-      return $this->db->get('user')->result_array();
-    } else {
-      return $this->db->get_where('user', ["user_id" => $user_id])->result_array();
+  public function getUser($id = NULL){
+    $this->db->select('id, name, email, image');
+    $this->db->from('user');
+    $this->db->where('is_active', 1);
+    if($id !== NULL){
+      $this->db->where("id", $id);
     }
+
+    $user = $this->db->get();
+    return $user->result_array();
   }
 
-  public function deleteUser($user_id){
-    $this->db->delete("user", ["user_id" => $user_id]);
+  public function checkUserEmail($email){
+    $user = $this->db->get_where('user', ["email" => $email]);
+    return $user->num_rows();
+  }
+
+  public function createAdmin($data){
+    $this->db->insert('user', $data);
     return $this->db->affected_rows();
   }
 
-  public function addUser($user_data){
-    $this->db->insert('user', $user_data);
-    return $this->db->affected_rows();
+  public function getUserByEmail($email){
+    $user = $this->db->get_where('user', ["email" => $email]);
+    return $user->result_array();
   }
 
-  public function updateUser($user_id, $user_data){
-    $this->db->update("user", $user_data, ["user_id" => $user_id]);
-    return $this->db->affected_rows();
-  }
-  public function checkUserAvailable($email){
-    return $this->db->get_where('user',['email' => $email ])->num_rows();
+  public function checkUserAdmin($email){
+    $user = $this->db->get_where('user', ["email" => $email, "role_id" => 2, 'role_id' => 1]);
+    return $user->num_rows();
   }
 }

@@ -12,128 +12,133 @@ class User extends REST_Controller {
 
   function __construct(){
     parent::__construct();
-    $this->load->model('UserModel');
+    $this->load->model('UserModel', "user");
   }
 
-  public function index_get(){
-    $user_id = $this->get('user_id');
+  // get admin list from API
+  public function getadmin_get(){
+    $id = $this->get("id");
 
-    if($user_id === NULL){
-      $user = $this->UserModel->getUser();
+    if($id === NULL){
+      $users = $this->user->getUser();
     } else {
-      $user = $this->UserModel->getUser($user_id);
+      $users = $this->user->getUser($id);
     }
 
-    if($user){
+    if(count($users) > 0){
       $this->response([
-        "status" => true,
-        "pesan" => "Data Berhasil di dapatkan",
-        "data" => $user
+        "status" => TRUE,
+        "pesan" => "SUCCESS",
+        "data" => $users
       ], REST_Controller::HTTP_OK);
     } else {
       $this->response([
-        "status" => false,
-        "pesan" => "Data Gagal di dapatkan"
-      ], REST_Controller::HTTP_NOT_FOUND);
+        "status" => FALSE,
+        "pesan" => "NOT FOUND"
+      ], REST_Controller::HTTP_OK);
     }
   }
 
-  public function index_post(){
+  //create admin function
+  public function createadmin_post(){
+    // get post data from registration form
+    $name = $this->post("user_name");
+    $email = $this->post("user_email");
+    $password = $this->post("user_password");
 
-    $username = stripslashes($this->post("username"));
-    $password = $this->post("password");
-    $email = $this->post('email');
+    //set current date
+    $date = date('Y-m-d H:i:s');
 
-    $password = password_hash($password, PASSWORD_DEFAULT);
+    //set default image
+    $image = "https://scontent.fcgk18-1.fna.fbcdn.net/v/t1.0-9/43163738_978108175725515_968455111669972992_n.jpg?_nc_cat=103&_nc_ht=scontent.fcgk18-1.fna&oh=d600e6439a7200031419a1ea250242b1&oe=5D36496D";
 
-    $user_data = [
-      "username" => trim($username),
-      "email" => trim($email),
-      "password" => $password,
-    ];
-    $user_check = $this->UserModel->checkUserAvailable($email);
+    // check admin email is exist
+    $checkAdmin = $this->user->checkUserEmail($email);
+    if($checkAdmin > 0){
+      //response bad request for existing email
+      $this->response([
+        "status" => FALSE,
+        "pesan" => "Email sudah dipakai!",
+        "data" => $checkAdmin
+      ], REST_Controller::HTTP_OK);
+    } else {
+      //create hashing password when not exitiong email
+      $password = password_hash(base64_encode($password), PASSWORD_DEFAULT);
+
+      // set insert data
+      $insertdata = [
+        "name" => $name,
+        "email" => $email,
+        "password" => $password,
+        "date_created" => $date,
+        "role_id" => 2,
+        "image" => $image
+      ];
+
+      // call method of create an admin
+      $createAdmin = $this->user->createAdmin($insertdata);
+      if($createAdmin > 0){
+        // response success for admin save in database
+        $this->response([
+          "status" => TRUE,
+          "pesan" => "Registrasi berhasil, tunggu konfirmasi admin"
+        ], REST_Controller::HTTP_OK);
+      } else {
+        // response bad request for failed registration 
+        $this->response([
+          "status" => FALSE,
+          "pesan" => "Registrasi gagal, kesalahan server"
+        ], REST_Controller::HTTP_OK);
+      }
+    }
+  }
+
+  // API login admin
+  public function loginadmin_post(){
+    $email = $this->post('user_email');
+    $password = $this->post('user_password');
+
+    // check admin email is exist
+    $checkAdmin = $this->user->checkUserAdmin($email);
     
-    if($user_check == 1){
-      $pesan = "User dengan email " . $email . " sudah ada";
+    if($checkAdmin == 0){
+      // if not exist return bad request
       $this->response([
-        "status" => false,
-        "pesan" => $pesan,
-      ], REST_Controller::HTTP_BAD_REQUEST);
+        "status" => FALSE,
+        "pesan" => "Akun tidak ditemukan!",
+        "data" => $checkAdmin,
+      ], REST_Controller::HTTP_OK);
     } else {
-      $user = $this->UserModel->addUser($user_data);
+      // if exist get User data by Email from user model
+      $user = $this->user->getUserByEmail($email);
+      $user_password = $user[0]['password'];
 
-      if($user > 0) {
-        $pesan = "User dengan email " . $email . " berhasil didaftarkan";
+      // verify match password user
+      $verify = password_verify($password, $user_password);
+
+      if($verify){
+        // if match store data for send the response to client side
+        $user_data = [
+          "user_id" => $user[0]["id"],
+          "user_name" => $user[0]['name'],
+          "user_email" => $user[0]['email'],
+          "user_image" => $user[0]['image']
+        ];
+
+        //set the success response
         $this->response([
-          "status" => true,
-          "pesan" => $pesan,
-        ], REST_Controller::HTTP_CREATED);
-      } else {
-        $this->response([
-          "status" => false,
-          "pesan" => "Gagal mendaftarkan user"
-        ], REST_Controller::HTTP_BAD_REQUEST);
-      }
-    }
-  }
-
-  public function index_put(){
-
-    $user_id = $this->put('user_id');
-    $username = $this->put('username');
-    $email = $this->put('email');
-    $password = $this->put('password');
-
-    $user_data = [
-      "username" => $username,
-      "email" => $email,
-      "password" => $password
-    ];
-
-    $user_check = $this->UserModel->checkUserAvailable($email);
-    if($user_check == 1){
-      $pesan = "User dengan email " . $email . " sudah ada";
-      $this->response([
-        "status" => false,
-        "pesan" => $pesan
-      ], REST_Controller::HTTP_BAD_REQUEST);
-    } else {
-      $user = $this->UserModel->updateUser($user_id, $user_data);
-      if($user > 0){
-        $this->response([
-          "status" => true,
-          "pesan" => "Data user berhasil diubah",
+          "status" => TRUE,
+          "pesan" => "Login Sukses",
+          "data" => $user_data
         ], REST_Controller::HTTP_OK);
       } else {
+        // response bad request for password don't match
         $this->response([
-          "status" => false,
-          "pesan" => "Data gagal diubah"
-        ], REST_Controller::HTTP_BAD_REQUEST);
-      }
-    }
-  }
-
-  public function index_delete(){
-    $user_id = $this->delete('user_id');
-    if($user_id === null){
-      $this->response([
-        "status" => false,
-        "pesan" => "Harus ada 1 ID",
-      ], REST_Controller::HTTP_BAD_REQUEST);
-    } else {
-      if( $this->UserModel->deleteUser($user_id) > 0 ) {
-        $this->response([
-          "status" => true,
-          "user_id" => $user_id,
-          "pesan" => "User berhasil dihapus",
+          "status" => FALSE,
+          "pesan" => "Email/Password Salah!",
+          "data" => $verify
         ], REST_Controller::HTTP_OK);
-      } else {
-        $this->response([
-          "status" => false,
-          "pesan" => "user tidak ditemukan",
-        ], REST_Controller::HTTP_NOT_FOUND);
       }
     }
   }
-
 }

@@ -77,6 +77,29 @@ class Animes extends REST_Controller {
       ], REST_Controller::HTTP_NOT_FOUND);
     }
   }
+
+
+  public function getanimelist_get(){
+    $id = $this->get('');
+    
+    if($id === NULL || $id == ""){
+      $anime = $this->AnimesModel->getAnimesMiniList();
+    } else {
+      $anime = $this->AnimesModel->getAnimesMiniList($id);      
+    }
+    if(count($anime) > 0){
+      $this->response([
+        "status" => TRUE,
+        "pesan" => "SUCCESS",
+        "data" => $anime
+      ], REST_Controller::HTTP_OK);
+    } else {
+      $this->response([
+        "status" => FALSE,
+        "pesan" => "NOT FOUND",
+      ], REST_Controller::HTTP_OK);
+    }
+  }
   
   public function index_delete(){
     $anime_id = $this->query('anime_id');
